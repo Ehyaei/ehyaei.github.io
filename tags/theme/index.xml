@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Theme on Random Walks in Datasets</title>
+    <link>https://ehyaei.github.io/ehyaei.github.io/tags/theme/</link>
+    <description>Recent content in Theme on Random Walks in Datasets</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 12 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ehyaei.github.io/ehyaei.github.io/tags/theme/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MPIThemes</title>
+      <link>https://ehyaei.github.io/ehyaei.github.io/packages/mpithemes/</link>
+      <pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ehyaei.github.io/ehyaei.github.io/packages/mpithemes/</guid>
+      <description>MPIThemes    
+RMarkdown enables you to write reproducible academic publications such as articles, PhD thesis, lab reports, posters, presentations, and a variety of other fascinating documents using the lightweight and plain-text Markdown syntax.
+In the Rmarkdown environment, you can write text, insert images, formulas, R and recently, Python scripts. When running your Rmd files with knitr, output plots, tables and code results are embedded in the md file.</description>
+    </item>
+    
+  </channel>
+</rss>

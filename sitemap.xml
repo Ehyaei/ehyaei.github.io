@@ -2,102 +2,71 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://ehyaei.github.io/categories/</loc>
-    <lastmod>2020-12-01T21:13:14-05:00</lastmod>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/tags/bookdown/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/p/hello-r-markdown/</loc>
-    <lastmod>2020-12-01T21:13:14-05:00</lastmod>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/categories/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/tags/plot/</loc>
-    <lastmod>2020-12-01T21:13:14-05:00</lastmod>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/categories/datasets/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/post/</loc>
-    <lastmod>2020-12-01T21:13:14-05:00</lastmod>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/categories/eda/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/categories/r/</loc>
-    <lastmod>2020-12-01T21:13:14-05:00</lastmod>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/tags/latex/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/tags/r-markdown/</loc>
-    <lastmod>2020-12-01T21:13:14-05:00</lastmod>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/tags/mpithemes/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/</loc>
-    <lastmod>2020-12-01T21:13:14-05:00</lastmod>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/packages/mpithemes/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/tags/regression/</loc>
-    <lastmod>2020-12-01T21:13:14-05:00</lastmod>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/tags/officedown/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/tags/</loc>
-    <lastmod>2020-12-01T21:13:14-05:00</lastmod>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/categories/package/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/p/test-chinese/</loc>
-    <lastmod>2020-09-09T00:00:00+00:00</lastmod>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/packages/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/categories/test/</loc>
-    <lastmod>2020-09-09T00:00:00+00:00</lastmod>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/post/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/categories/%E6%B5%8B%E8%AF%95/</loc>
-    <lastmod>2020-09-09T00:00:00+00:00</lastmod>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/categories/r/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/archives/</loc>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/categories/reproducible-research/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/tags/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/tags/theme/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/categories/theme/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/p/why-do-we-need-to-explore-datasetsimages/city.jpg/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/archives/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/page/</loc>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/page/</loc>
     <lastmod>2020-10-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/tags/css/</loc>
-    <lastmod>2019-03-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/tags/html/</loc>
-    <lastmod>2019-03-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/tags/markdown/</loc>
-    <lastmod>2019-03-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/p/markdown-syntax-guide/</loc>
-    <lastmod>2019-03-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/categories/syntax/</loc>
-    <lastmod>2019-03-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/tags/themes/</loc>
-    <lastmod>2019-03-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/categories/themes/</loc>
-    <lastmod>2019-03-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/tags/privacy/</loc>
-    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/p/rich-content/</loc>
-    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/tags/shortcodes/</loc>
-    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/p/placeholder-text/</loc>
-    <lastmod>2019-03-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/tags/tag-with-whitespaces/</loc>
-    <lastmod>2019-03-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/categories/test-with-whitespaces/</loc>
-    <lastmod>2019-03-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/tags/text/</loc>
-    <lastmod>2019-03-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/p/math-typesetting/</loc>
-    <lastmod>2019-03-08T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/tags/emoji/</loc>
-    <lastmod>2019-03-05T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/p/emoji-support/</loc>
-    <lastmod>2019-03-05T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/about/</loc>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/about/</loc>
     <lastmod>2020-10-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/search/</loc>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/search/</loc>
+  </url><url>
+    <loc>https://ehyaei.github.io/ehyaei.github.io/categories/test/</loc>
   </url>
 </urlset>
