@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Art on Random Walks in Datasets</title>
+    <link>https://ehyaei.github.io/categories/art/</link>
+    <description>Recent content in Art on Random Walks in Datasets</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 20 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ehyaei.github.io/categories/art/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kaashi</title>
+      <link>https://ehyaei.github.io/packages/kaashi/</link>
+      <pubDate>Sat, 20 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ehyaei.github.io/packages/kaashi/</guid>
+      <description>Kaashi (Tile)   
+The art of tiling has long been used to decorate homes and holy places in Iran. One of the masterpieces of this art can be found in Isfahan’s Sheikh Lotfollah Mosque.
+The purpose of this package is to create Islamic pattern using R functions. To generate Islamic patterns, we employ the Hankin method, as described in Craig S. Kaplan’s paper Islamic Star Patterns from Polygons in Contact.</description>
+    </item>
+    
+  </channel>
+</rss>
