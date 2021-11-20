@@ -6,7 +6,34 @@
     <description>Recent content in Tags on Random Walks in Datasets</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 12 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ehyaei.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 20 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ehyaei.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Latex</title>
+      <link>https://ehyaei.github.io/tags/latex/</link>
+      <pubDate>Sat, 20 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ehyaei.github.io/tags/latex/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>RMarkdown</title>
+      <link>https://ehyaei.github.io/tags/rmarkdown/</link>
+      <pubDate>Sat, 20 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ehyaei.github.io/tags/rmarkdown/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Theme</title>
+      <link>https://ehyaei.github.io/tags/theme/</link>
+      <pubDate>Sat, 20 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ehyaei.github.io/tags/theme/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Bookdown</title>
       <link>https://ehyaei.github.io/tags/bookdown/</link>
@@ -35,15 +62,6 @@
     </item>
     
     <item>
-      <title>Latex</title>
-      <link>https://ehyaei.github.io/tags/latex/</link>
-      <pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ehyaei.github.io/tags/latex/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>MPIThemes</title>
       <link>https://ehyaei.github.io/tags/mpithemes/</link>
       <pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate>
@@ -58,15 +76,6 @@
       <pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate>
       
       <guid>https://ehyaei.github.io/tags/officedown/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Theme</title>
-      <link>https://ehyaei.github.io/tags/theme/</link>
-      <pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ehyaei.github.io/tags/theme/</guid>
       <description></description>
     </item>
     
