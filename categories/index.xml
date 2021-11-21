@@ -35,15 +35,6 @@
     </item>
     
     <item>
-      <title>RTL</title>
-      <link>https://ehyaei.github.io/categories/rtl/</link>
-      <pubDate>Sat, 20 Nov 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ehyaei.github.io/categories/rtl/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Theme</title>
       <link>https://ehyaei.github.io/categories/theme/</link>
       <pubDate>Sat, 20 Nov 2021 00:00:00 +0000</pubDate>
@@ -53,11 +44,11 @@
     </item>
     
     <item>
-      <title>Datasets</title>
-      <link>https://ehyaei.github.io/categories/datasets/</link>
+      <title>Dataset</title>
+      <link>https://ehyaei.github.io/categories/dataset/</link>
       <pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://ehyaei.github.io/categories/datasets/</guid>
+      <guid>https://ehyaei.github.io/categories/dataset/</guid>
       <description></description>
     </item>
     
@@ -67,24 +58,6 @@
       <pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate>
       
       <guid>https://ehyaei.github.io/categories/eda/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Reproducible Research</title>
-      <link>https://ehyaei.github.io/categories/reproducible-research/</link>
-      <pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ehyaei.github.io/categories/reproducible-research/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Test</title>
-      <link>https://ehyaei.github.io/categories/test/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://ehyaei.github.io/categories/test/</guid>
       <description></description>
     </item>
     

@@ -19,5 +19,17 @@ In the Rmarkdown environment, you can write text, insert images, formulas and si
  RTLNotes is not only for R users!. Python programmers can also run codes in Rmarkdown.</description>
     </item>
     
+    <item>
+      <title>MPIThemes</title>
+      <link>https://ehyaei.github.io/packages/mpithemes/</link>
+      <pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ehyaei.github.io/packages/mpithemes/</guid>
+      <description>MPIThemes    
+RMarkdown enables you to write reproducible academic publications such as articles, PhD thesis, lab reports, posters, presentations, and a variety of other fascinating documents using the lightweight and plain-text Markdown syntax.
+In the Rmarkdown environment, you can write text, insert images, formulas and simultaneously R and Python scripts.
+ MPIThemes is not only for R users!. Python programmers can also run codes in Rmarkdown.</description>
+    </item>
+    
   </channel>
 </rss>

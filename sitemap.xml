@@ -35,7 +35,7 @@
     <loc>https://ehyaei.github.io/tags/rmarkdown/</loc>
     <lastmod>2021-11-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/categories/rtl/</loc>
+    <loc>https://ehyaei.github.io/tags/rtl/</loc>
     <lastmod>2021-11-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://ehyaei.github.io/packages/rtlnotes/</loc>
@@ -50,13 +50,10 @@
     <loc>https://ehyaei.github.io/categories/theme/</loc>
     <lastmod>2021-11-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/tags/bookdown/</loc>
+    <loc>https://ehyaei.github.io/tags/dataset/</loc>
     <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/tags/datasets/</loc>
-    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/categories/datasets/</loc>
+    <loc>https://ehyaei.github.io/categories/dataset/</loc>
     <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://ehyaei.github.io/tags/eda/</loc>
@@ -65,19 +62,10 @@
     <loc>https://ehyaei.github.io/categories/eda/</loc>
     <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/tags/mpithemes/</loc>
-    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://ehyaei.github.io/packages/mpithemes/</loc>
     <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ehyaei.github.io/tags/officedown/</loc>
-    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://ehyaei.github.io/post/</loc>
-    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ehyaei.github.io/categories/reproducible-research/</loc>
     <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://ehyaei.github.io/p/why-do-we-need-to-explore-datasetsimages/city.jpg/</loc>
@@ -93,7 +81,5 @@
     <lastmod>2020-10-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://ehyaei.github.io/search/</loc>
-  </url><url>
-    <loc>https://ehyaei.github.io/categories/test/</loc>
   </url>
 </urlset>

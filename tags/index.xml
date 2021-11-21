@@ -44,6 +44,15 @@
     </item>
     
     <item>
+      <title>RTL</title>
+      <link>https://ehyaei.github.io/tags/rtl/</link>
+      <pubDate>Sat, 20 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ehyaei.github.io/tags/rtl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Theme</title>
       <link>https://ehyaei.github.io/tags/theme/</link>
       <pubDate>Sat, 20 Nov 2021 00:00:00 +0000</pubDate>
@@ -53,20 +62,11 @@
     </item>
     
     <item>
-      <title>Bookdown</title>
-      <link>https://ehyaei.github.io/tags/bookdown/</link>
+      <title>Dataset</title>
+      <link>https://ehyaei.github.io/tags/dataset/</link>
       <pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://ehyaei.github.io/tags/bookdown/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Datasets</title>
-      <link>https://ehyaei.github.io/tags/datasets/</link>
-      <pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ehyaei.github.io/tags/datasets/</guid>
+      <guid>https://ehyaei.github.io/tags/dataset/</guid>
       <description></description>
     </item>
     
@@ -76,24 +76,6 @@
       <pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate>
       
       <guid>https://ehyaei.github.io/tags/eda/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>MPIThemes</title>
-      <link>https://ehyaei.github.io/tags/mpithemes/</link>
-      <pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ehyaei.github.io/tags/mpithemes/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Officedown</title>
-      <link>https://ehyaei.github.io/tags/officedown/</link>
-      <pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ehyaei.github.io/tags/officedown/</guid>
       <description></description>
     </item>
     
