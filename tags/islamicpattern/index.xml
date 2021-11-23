@@ -13,7 +13,7 @@
       <pubDate>Mon, 22 Nov 2021 00:00:00 +0000</pubDate>
       
       <guid>https://ehyaei.github.io/gallery/islamic-patterns-regular-tiling/</guid>
-      <description>if (!jQuery) { alert(&#34;jquery is not loaded&#34;); } $( document ).ready(() = { const gallery = $(&#34;#gallery-0&#34;); let swipeboxInstance = null; gallery.on(&#39;jg.complete&#39;, () = { $(() = { $(&#39;.lazy&#39;).Lazy({ visibleOnly: true, afterLoad: element = element.css({filter: &#34;none&#34;, transition: &#34;filter 1.0s ease-in-out&#34;}) }); }); swipeboxInstance = $(&#39;.galleryImg&#39;).swipebox( jQuery.extend({}, { } ) ); }); gallery.justifiedGallery({ rowHeight : 150 , margins : 5 , border : 0, waitThumbnailsLoad : false, lastRow : &#34;</description>
+      <description>if (!jQuery) { alert(&#34;jquery is not loaded&#34;); } $( document ).ready(() = { const gallery = $(&#34;#gallery-0&#34;); let swipeboxInstance = null; gallery.on(&#39;jg.complete&#39;, () = { $(() = { $(&#39;.lazy&#39;).Lazy({ visibleOnly: true, afterLoad: element = element.css({filter: &#34;none&#34;, transition: &#34;filter 1.0s ease-in-out&#34;}) }); }); swipeboxInstance = $(&#39;.galleryImg&#39;).swipebox( jQuery.extend({}, { } ) ); }); gallery.</description>
     </item>
     
   </channel>
