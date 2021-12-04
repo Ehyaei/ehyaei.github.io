@@ -13,7 +13,7 @@
       <pubDate>Tue, 30 Nov 2021 00:00:00 +0000</pubDate>
       
       <guid>https://ehyaei.github.io/gallery/daily-motif/</guid>
-      <description>if (!jQuery) { alert(&#34;jquery is not loaded&#34;); } $( document ).ready(() = { const gallery = $(&#34;#gallery-0&#34;); let swipeboxInstance = null; gallery.on(&#39;jg.complete&#39;, () = { $(() = { $(&#39;.lazy&#39;).Lazy({ visibleOnly: true, afterLoad: element = element.css({filter: &#34;none&#34;, transition: &#34;filter 1.0s ease-in-out&#34;}) }); }); swipeboxInstance = $(&#39;.</description>
+      <description>if (!jQuery) { alert(&#34;jquery is not loaded&#34;); } $( document ).ready(() = { const gallery = $(&#34;#gallery-0&#34;); let swipeboxInstance = null; gallery.on(&#39;jg.complete&#39;, () = { $(() = { $(&#39;.lazy&#39;).Lazy({ visibleOnly: true, afterLoad: element = element.css({filter: &#34;none&#34;, transition: &#34;filter 1.0s ease-in-out&#34;</description>
     </item>
     
     <item>
