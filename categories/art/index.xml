@@ -13,7 +13,7 @@
       <pubDate>Tue, 30 Nov 2021 00:00:00 +0000</pubDate>
       
       <guid>https://ehyaei.github.io/gallery/daily-motif/</guid>
-      <description>if (!jQuery) { alert(&#34;jquery is not loaded&#34;); } $( document ).ready(() = { const gallery = $(&#34;#gallery-0&#34;); let swipeboxInstance = null; gallery.</description>
+      <description>if (!jQuery) { alert(&#34;jquery is not loaded&#34;); } $( document ).</description>
     </item>
     
     <item>
