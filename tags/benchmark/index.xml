@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Benchmark on Random Walks in Datasets</title>
+    <link>https://ehyaei.github.io/tags/benchmark/</link>
+    <description>Recent content in Benchmark on Random Walks in Datasets</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 05 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://ehyaei.github.io/tags/benchmark/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Scala Data Collections Performance: Maps and Sets</title>
+      <link>https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/</link>
+      <pubDate>Wed, 05 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/</guid>
+      <description>In this post, we try to understand the size and performance of the Sets and Maps data collection. In the first, we review the structure of the Mutable and Immutabla Sets and Mapscollections.
+ Figure 1: Immutable Maps and Sets Data Collection   Figure 2: Mutable Maps Data Collection   Figure 3: Mutable Sets Data Collection  A quick review of each collection application may be found in the table below.</description>
+    </item>
+    
+    <item>
+      <title>Scala Data Collections Performance: Sequence Types</title>
+      <link>https://ehyaei.github.io/p/scala-data-structures/</link>
+      <pubDate>Mon, 03 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://ehyaei.github.io/p/scala-data-structures/</guid>
+      <description>Scala has different data collections and using the proper objects is important in optimizing the big data pipelines.
+This post tries to study the characteristics of the Scala collection, such as:
+ Memory Usage,
+ Operations Time.
+  from the point of view of practical benchmarks. We will try to study the performance of data collection in two posts; part one related to Sequence collection, the second contains Maps and Sets.</description>
+    </item>
+    
+  </channel>
+</rss>

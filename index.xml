@@ -6,7 +6,839 @@
         <description>Recent content on Random Walks in Datasets</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Tue, 30 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ehyaei.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 05 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://ehyaei.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Scala Data Collections Performance: Maps and Sets</title>
+        <link>https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/</link>
+        <pubDate>Wed, 05 Jan 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/</guid>
+        <description>&lt;img src="https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/images/wallpaper.png" alt="Featured image of post Scala Data Collections Performance: Maps and Sets" /&gt;
+&lt;script src=&#34;https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/tabwid/tabwid.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/echarts4r/echarts-en.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/echarts4r/ecStat.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/echarts4r/dataTool.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/echarts4r-binding/echarts4r.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/shine/shine.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;In this post, we try to understand the size and performance of the &lt;code&gt;Sets&lt;/code&gt; and &lt;code&gt;Maps&lt;/code&gt; data collection. In the first, we review the structure of the Mutable and Immutabla &lt;code&gt;Sets&lt;/code&gt; and &lt;code&gt;Maps&lt;/code&gt;collections.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:unnamed-chunk-1&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;images/map_set.svg&#34; alt=&#34;Immutable Maps and Sets Data Collection&#34;  /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: Immutable Maps and Sets Data Collection
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:unnamed-chunk-2&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;images/maps.svg&#34; alt=&#34;Mutable Maps Data Collection&#34;  /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 2: Mutable Maps Data Collection
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:unnamed-chunk-3&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;images/sets.svg&#34; alt=&#34;Mutable Sets Data Collection&#34;  /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 3: Mutable Sets Data Collection
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;A quick review of each collection application may be found in the table below.&lt;/p&gt;
+&lt;template id=&#34;2e505583-e34d-4516-8882-c489f719d5aa&#34;&gt;&lt;style&gt;
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+&lt;/style&gt;&lt;div class=&#34;tabwid&#34;&gt;&lt;style&gt;.cl-ce24b9ec{}.cl-ce135774{font-family:&#39;DejaVu Sans&#39;;font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ce138a64{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ce142118{width:102.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ce14212c{width:2293.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ce14212d{width:102.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ce142136{width:2293.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ce142140{width:102.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ce142141{width:2293.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class=&#39;cl-ce24b9ec&#39;&gt;
+&lt;caption class=&#34;Table Caption&#34;&gt;
+&lt;p&gt;&lt;span id=&#34;tab:unnamed-chunk-5&#34;&gt;Table 1: &lt;/span&gt;Maps and Sets Data Collections&lt;/p&gt;
+&lt;/caption&gt;
+&lt;thead&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-ce142140&#34;&gt;&lt;p class=&#34;cl-ce138a64&#34;&gt;&lt;span class=&#34;cl-ce135774&#34;&gt;Collection&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ce142141&#34;&gt;&lt;p class=&#34;cl-ce138a64&#34;&gt;&lt;span class=&#34;cl-ce135774&#34;&gt;description&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-ce142118&#34;&gt;&lt;p class=&#34;cl-ce138a64&#34;&gt;&lt;span class=&#34;cl-ce135774&#34;&gt;HashSet&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ce14212c&#34;&gt;&lt;p class=&#34;cl-ce138a64&#34;&gt;&lt;span class=&#34;cl-ce135774&#34;&gt;A concrete implementation of Set semantics is HashSet. The element&#39;s hashCode will be used as a key in the HashSet, allowing for a quick lookup of the element&#39;s value. HashSet has immutable and mutable type&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-ce142118&#34;&gt;&lt;p class=&#34;cl-ce138a64&#34;&gt;&lt;span class=&#34;cl-ce135774&#34;&gt;HashMap&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ce14212c&#34;&gt;&lt;p class=&#34;cl-ce138a64&#34;&gt;&lt;span class=&#34;cl-ce135774&#34;&gt;The Scala Collection includes mutable and immutable HashMap. It&#39;s used to save and return a map of elements. A HashMap is a Hash Table data structure that stores a collection of key and value pairs. It implements Map in its most basic form.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-ce142118&#34;&gt;&lt;p class=&#34;cl-ce138a64&#34;&gt;&lt;span class=&#34;cl-ce135774&#34;&gt;TreeSet&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ce14212c&#34;&gt;&lt;p class=&#34;cl-ce138a64&#34;&gt;&lt;span class=&#34;cl-ce135774&#34;&gt;A set is a data structure that allows us to store distinct components. The Set does not provide element ordering, but a TreeSet will create items in a specific order. TreeSet includes two types in Scala: scala.collection.mutable.TreeSet and scala.collection.immutable.TreeSet.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-ce142118&#34;&gt;&lt;p class=&#34;cl-ce138a64&#34;&gt;&lt;span class=&#34;cl-ce135774&#34;&gt;TreeMap&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ce14212c&#34;&gt;&lt;p class=&#34;cl-ce138a64&#34;&gt;&lt;span class=&#34;cl-ce135774&#34;&gt;TreeMap is useful when performing range queries or traversing in order, whereas the map does not keep order. If you only need key lookups and don&#39;t care in which order key-values are traversed, Map will suffice, which will generally have better performance.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-ce142118&#34;&gt;&lt;p class=&#34;cl-ce138a64&#34;&gt;&lt;span class=&#34;cl-ce135774&#34;&gt;BitSet&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ce14212c&#34;&gt;&lt;p class=&#34;cl-ce138a64&#34;&gt;&lt;span class=&#34;cl-ce135774&#34;&gt;Bitsets are collections of non-negative integers that are expressed as 64-bit words with variable-size arrays of bits. The greatest number stored in a bitset determines its memory footprint. There are two versions of BitSet in Scala: scala.collection.immutable.BitSet and scala.collection.mutable.BitSet.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-ce142118&#34;&gt;&lt;p class=&#34;cl-ce138a64&#34;&gt;&lt;span class=&#34;cl-ce135774&#34;&gt;ListMap&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ce14212c&#34;&gt;&lt;p class=&#34;cl-ce138a64&#34;&gt;&lt;span class=&#34;cl-ce135774&#34;&gt;A ListMap is a collection of key and value pairs where the keys are backed by a List data structure. ListMap collections are used only for a small number of elements.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-ce14212d&#34;&gt;&lt;p class=&#34;cl-ce138a64&#34;&gt;&lt;span class=&#34;cl-ce135774&#34;&gt;WeakHashMap&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ce142136&#34;&gt;&lt;p class=&#34;cl-ce138a64&#34;&gt;&lt;span class=&#34;cl-ce135774&#34;&gt;A weak hash map is a special kind of hash map where the garbage collector does not follow links from the map to the keys stored in it. This means that a key and its associated value will disappear from the map if there is no other reference to that key. Weak hash maps are useful for tasks such as caching, where you want to re-use an expensive function&#39;s result if the function is called again on the same key.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class=&#34;flextable-shadow-host&#34; id=&#34;4723dadf-a460-4d76-bbde-31a87663c622&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+var dest = document.getElementById(&#34;4723dadf-a460-4d76-bbde-31a87663c622&#34;);
+var template = document.getElementById(&#34;2e505583-e34d-4516-8882-c489f719d5aa&#34;);
+var caption = template.content.querySelector(&#34;caption&#34;);
+if(caption) {
+  caption.style.cssText = &#34;display:block;text-align:center;&#34;;
+  var newcapt = document.createElement(&#34;p&#34;);
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: &#39;open&#39;});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+&lt;/script&gt;
+
+&lt;div id=&#34;benchmark-codes&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Benchmark Codes&lt;/h3&gt;
+&lt;p&gt;The benchmark codes in this section are more similar to the &lt;code&gt;Seq&lt;/code&gt; Collection benchmark codes from a previous post. Only the benchmark functions for &lt;code&gt;Sets&lt;/code&gt; and &lt;code&gt;Maps&lt;/code&gt; are different.
+The &lt;code&gt;Map&lt;/code&gt; benchmark code can be found here.&lt;/p&gt;
+&lt;pre class=&#34;scala&#34;&gt;&lt;code&gt;  def benchmarkMap(x:scala.collection.Map[Int,Int], n:Int, m:Int): Map[String, Double] = {
+    Map(
+      &amp;quot;volume&amp;quot; -&amp;gt; estimate(x),
+      &amp;quot;lookup&amp;quot; -&amp;gt; timeElapsing(x.get(m))(n),
+      &amp;quot;add&amp;quot; -&amp;gt; timeElapsing(x ++ Map((m,m)))(n),
+      &amp;quot;remove&amp;quot; -&amp;gt; timeElapsing(x-0)(n),
+      &amp;quot;min&amp;quot; -&amp;gt; timeElapsing(x.minBy(_._2)._1)(n)
+    )
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Similar to &lt;code&gt;Map&lt;/code&gt;, we define a benchmark function for &lt;code&gt;Set&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;scala&#34;&gt;&lt;code&gt;  def benchmarkSet(x:scala.collection.Set[Int], n:Int, m:Int): Map[String, Double] = {
+    Map(
+      &amp;quot;volume&amp;quot; -&amp;gt; estimate(x),
+      &amp;quot;lookup&amp;quot; -&amp;gt; timeElapsing(x.contains(m))(n),
+      &amp;quot;add&amp;quot; -&amp;gt; timeElapsing(x ++ Map((m,m)))(n),
+      &amp;quot;remove&amp;quot; -&amp;gt; timeElapsing(x-0)(n),
+      &amp;quot;min&amp;quot; -&amp;gt; timeElapsing(x.min)(n)
+    )
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the below code, the definition of each collection can be found.&lt;/p&gt;
+&lt;pre class=&#34;scala&#34;&gt;&lt;code&gt;  val stats: Seq[List[Map[String, String]]] = for(s &amp;lt;- sizes) yield {
+    val integers = 0 until s
+    List(
+      (&amp;quot;Immutable_HashMap&amp;quot;, integers.zipWithIndex.toMap),
+      (&amp;quot;Immutable_TreeMap&amp;quot;, scala.collection.immutable.TreeMap(integers.zipWithIndex:_*)),
+      (&amp;quot;Immutable_ListMap&amp;quot;,scala.collection.immutable.ListMap(integers.zipWithIndex:_*)),
+      (&amp;quot;Mutable_HashMap&amp;quot;, scala.collection.mutable.HashMap(integers.zipWithIndex:_*)),
+      (&amp;quot;Mutable_WeakHashMap&amp;quot;,scala.collection.mutable.WeakHashMap(integers.zipWithIndex:_*))
+    ).map(x =&amp;gt; {
+      Map(&amp;quot;size&amp;quot; -&amp;gt; s.toString, &amp;quot;collection&amp;quot; -&amp;gt; x._1) ++ 
+        benchmarkMap(x._2, 100, s).map(x =&amp;gt; (x._1, x._2.toString))
+    }) ++  List(
+      (&amp;quot;Immutable_HashSet&amp;quot;, integers.toSet),
+      (&amp;quot;Immutable_TreeSet&amp;quot;, scala.collection.immutable.TreeSet(integers:_*)),
+      (&amp;quot;Immutable_BitSet&amp;quot;, scala.collection.immutable.BitSet(integers:_*)),
+      (&amp;quot;Mutable_HashSet&amp;quot;, scala.collection.mutable.HashSet(integers:_*)),
+      (&amp;quot;Mutable_BitSet&amp;quot;, scala.collection.mutable.BitSet(integers:_*)),
+      (&amp;quot;Mutable_TreeSet&amp;quot;, scala.collection.mutable.TreeSet(integers:_*))
+    ).map(x =&amp;gt; {
+      Map(&amp;quot;size&amp;quot; -&amp;gt; s.toString, &amp;quot;collection&amp;quot; -&amp;gt; x._1) ++ 
+        benchmarkSet(x._2, 100, s).map(x =&amp;gt; (x._1, x._2.toString))
+    })
+
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;object-size-in-memory&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Object Size in Memory&lt;/h3&gt;
+&lt;p&gt;The benchmark information is now ready.
+The table below shows the estimated size in bytes of various collections of varied sizes.&lt;/p&gt;
+&lt;template id=&#34;81e3bb93-1ad2-49df-ab04-a638d397a887&#34;&gt;&lt;style&gt;
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+&lt;/style&gt;&lt;div class=&#34;tabwid&#34;&gt;&lt;style&gt;.cl-cec93e18{}.cl-ceb3e72a{font-family:&#39;DejaVu Sans&#39;;font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ceb3e748{font-family:&#39;DejaVu Sans&#39;;font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ceb41eac{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ceb41eca{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ceb55c7c{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ceb55cc2{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ceb55ccc{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(102, 102, 102, 1.00);border-top: 0.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ceb55cd6{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(102, 102, 102, 1.00);border-top: 0.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ceb55ce0{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ceb55cea{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ceb55cf4{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ceb55cfe{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class=&#39;cl-cec93e18&#39;&gt;
+&lt;caption class=&#34;Table Caption&#34;&gt;
+&lt;p&gt;&lt;span id=&#34;tab:unnamed-chunk-9&#34;&gt;Table 2: &lt;/span&gt;Estimated Size of Scala Collections[Int] In Different Size (in bytes)&lt;/p&gt;
+&lt;/caption&gt;
+&lt;thead&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-ceb55cfe&#34;&gt;&lt;p class=&#34;cl-ceb41eac&#34;&gt;&lt;span class=&#34;cl-ceb3e72a&#34;&gt;Immutability&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55cfe&#34;&gt;&lt;p class=&#34;cl-ceb41eac&#34;&gt;&lt;span class=&#34;cl-ceb3e72a&#34;&gt;Collection&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55cf4&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e72a&#34;&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55cf4&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e72a&#34;&gt;16&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55cf4&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e72a&#34;&gt;256&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55cf4&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e72a&#34;&gt;4,096&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55cf4&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e72a&#34;&gt;65,536&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55cf4&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e72a&#34;&gt;1,048,576&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td  rowspan=&#34;5&#34;class=&#34;cl-ceb55cc2&#34;&gt;&lt;p class=&#34;cl-ceb41eac&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;Immutable&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55cc2&#34;&gt;&lt;p class=&#34;cl-ceb41eac&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;HashMap&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55c7c&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55c7c&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;1,136&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55c7c&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;24,304&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55c7c&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;430,384&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55c7c&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;7,050,528&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55c7c&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;111,206,912&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-ceb55cd6&#34;&gt;&lt;p class=&#34;cl-ceb41eac&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;HashSet&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;32&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;744&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;14,184&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;235,944&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;3,906,968&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;60,877,432&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-ceb55cd6&#34;&gt;&lt;p class=&#34;cl-ceb41eac&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;ListMap&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;56&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;656&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;12,304&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;227,344&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;3,667,984&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;58,718,224&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-ceb55cd6&#34;&gt;&lt;p class=&#34;cl-ceb41eac&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;TreeMap&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;88&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;808&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;14,376&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;260,136&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;4,192,296&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;67,106,856&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-ceb55cd6&#34;&gt;&lt;p class=&#34;cl-ceb41eac&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;TreeSet&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;104&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;824&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;12,344&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;196,664&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;3,145,784&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;50,331,704&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td  rowspan=&#34;4&#34;class=&#34;cl-ceb55ce0&#34;&gt;&lt;p class=&#34;cl-ceb41eac&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;Mutable&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55cd6&#34;&gt;&lt;p class=&#34;cl-ceb41eac&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;HashMap&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;160&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;824&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;14,328&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;268,848&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;4,412,704&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;63,585,176&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-ceb55cd6&#34;&gt;&lt;p class=&#34;cl-ceb41eac&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;HashSet&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;200&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;568&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;7,848&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;112,568&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;2,097,144&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;32,883,416&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-ceb55cd6&#34;&gt;&lt;p class=&#34;cl-ceb41eac&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;TreeSet&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;120&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;960&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;14,400&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;229,440&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;3,670,080&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55ccc&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;58,720,320&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-ceb55ce0&#34;&gt;&lt;p class=&#34;cl-ceb41eac&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;WeakHashMap&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55cea&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;344&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55cea&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;1,248&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55cea&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;17,856&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55cea&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;259,784&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55cea&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;98,542,768&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-ceb55cea&#34;&gt;&lt;p class=&#34;cl-ceb41eca&#34;&gt;&lt;span class=&#34;cl-ceb3e748&#34;&gt;67,101,968&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class=&#34;flextable-shadow-host&#34; id=&#34;246bb20e-e96f-4eaa-8717-fb4cd487a188&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+var dest = document.getElementById(&#34;246bb20e-e96f-4eaa-8717-fb4cd487a188&#34;);
+var template = document.getElementById(&#34;81e3bb93-1ad2-49df-ab04-a638d397a887&#34;);
+var caption = template.content.querySelector(&#34;caption&#34;);
+if(caption) {
+  caption.style.cssText = &#34;display:block;text-align:center;&#34;;
+  var newcapt = document.createElement(&#34;p&#34;);
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: &#39;open&#39;});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+&lt;/script&gt;
+
+&lt;p&gt;The average memory size of each object is calculated and shown below.&lt;/p&gt;
+&lt;div id=&#34;htmlwidget-1&#34; style=&#34;width:100%;height:500px;&#34; class=&#34;echarts4r html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-1&#34;&gt;{&#34;x&#34;:{&#34;theme&#34;:&#34;shine&#34;,&#34;tl&#34;:false,&#34;draw&#34;:true,&#34;renderer&#34;:&#34;canvas&#34;,&#34;events&#34;:[],&#34;buttons&#34;:[],&#34;opts&#34;:{&#34;xAxis&#34;:[{&#34;show&#34;:true,&#34;name&#34;:&#34;Collection&#34;}],&#34;yAxis&#34;:[{&#34;data&#34;:[&#34;WeakHashMap&#34;,&#34;TreeSet&#34;,&#34;TreeMap&#34;,&#34;ListMap&#34;,&#34;HashSet&#34;,&#34;HashMap&#34;],&#34;type&#34;:&#34;category&#34;,&#34;boundaryGap&#34;:true,&#34;name&#34;:&#34;Volume&#34;}],&#34;legend&#34;:{&#34;data&#34;:[&#34;Immutable&#34;,&#34;Mutable&#34;]},&#34;series&#34;:[{&#34;data&#34;:[{&#34;value&#34;:[&#34;58&#34;,&#34;TreeSet&#34;]},{&#34;value&#34;:[&#34;64&#34;,&#34;TreeMap&#34;]},{&#34;value&#34;:[&#34;52&#34;,&#34;ListMap&#34;]},{&#34;value&#34;:[&#34;52&#34;,&#34;HashSet&#34;]},{&#34;value&#34;:[&#34;87&#34;,&#34;HashMap&#34;]}],&#34;name&#34;:&#34;Immutable&#34;,&#34;type&#34;:&#34;bar&#34;,&#34;yAxisIndex&#34;:0,&#34;xAxisIndex&#34;:0,&#34;coordinateSystem&#34;:&#34;cartesian2d&#34;},{&#34;data&#34;:[{&#34;value&#34;:[&#34;354&#34;,&#34;WeakHashMap&#34;]},{&#34;value&#34;:[&#34; 67&#34;,&#34;TreeSet&#34;]},{&#34;value&#34;:[&#34; 59&#34;,&#34;HashSet&#34;]},{&#34;value&#34;:[&#34; 77&#34;,&#34;HashMap&#34;]}],&#34;name&#34;:&#34;Mutable&#34;,&#34;type&#34;:&#34;bar&#34;,&#34;yAxisIndex&#34;:0,&#34;xAxisIndex&#34;:0,&#34;coordinateSystem&#34;:&#34;cartesian2d&#34;}],&#34;title&#34;:[{&#34;text&#34;:&#34;Average Collection[Int] Volume in Bytes&#34;}],&#34;tooltip&#34;:{&#34;trigger&#34;:&#34;axis&#34;,&#34;textStyle&#34;:{&#34;color&#34;:&#34;#ffffff&#34;}}},&#34;dispose&#34;:true},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;/div&gt;
+&lt;div id=&#34;methods-performance&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Methods Performance&lt;/h3&gt;
+&lt;p&gt;The table below contains a list of the data collection methods used.&lt;/p&gt;
+&lt;template id=&#34;136cb7b7-2235-43c1-8ef0-972c2706031c&#34;&gt;&lt;style&gt;
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+&lt;/style&gt;&lt;div class=&#34;tabwid&#34;&gt;&lt;style&gt;.cl-cf3cbaa0{}.cl-cf30d0f0{font-family:&#39;DejaVu Sans&#39;;font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-cf30ed24{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cf316830{width:79.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf316844{width:521.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf316845{width:521.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf31684e{width:79.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf31684f{width:521.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf316858{width:79.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class=&#39;cl-cf3cbaa0&#39;&gt;
+&lt;caption class=&#34;Table Caption&#34;&gt;
+&lt;p&gt;&lt;span id=&#34;tab:unnamed-chunk-12&#34;&gt;Table 3: &lt;/span&gt;Operations That Are Tested on Maps ans Sets&lt;/p&gt;
+&lt;/caption&gt;
+&lt;thead&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-cf316858&#34;&gt;&lt;p class=&#34;cl-cf30ed24&#34;&gt;&lt;span class=&#34;cl-cf30d0f0&#34;&gt;operations&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf31684f&#34;&gt;&lt;p class=&#34;cl-cf30ed24&#34;&gt;&lt;span class=&#34;cl-cf30d0f0&#34;&gt;description&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-cf316830&#34;&gt;&lt;p class=&#34;cl-cf30ed24&#34;&gt;&lt;span class=&#34;cl-cf30d0f0&#34;&gt;lookup&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf316844&#34;&gt;&lt;p class=&#34;cl-cf30ed24&#34;&gt;&lt;span class=&#34;cl-cf30d0f0&#34;&gt;Testing whether an element is contained in set, or selecting a value associated with a key.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-cf316830&#34;&gt;&lt;p class=&#34;cl-cf30ed24&#34;&gt;&lt;span class=&#34;cl-cf30d0f0&#34;&gt;add&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf316844&#34;&gt;&lt;p class=&#34;cl-cf30ed24&#34;&gt;&lt;span class=&#34;cl-cf30d0f0&#34;&gt;Adding a new element to a set or key/value pair to a map.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-cf316830&#34;&gt;&lt;p class=&#34;cl-cf30ed24&#34;&gt;&lt;span class=&#34;cl-cf30d0f0&#34;&gt;remove&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf316844&#34;&gt;&lt;p class=&#34;cl-cf30ed24&#34;&gt;&lt;span class=&#34;cl-cf30d0f0&#34;&gt;Removing an element from a set or a key from a map.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-cf31684e&#34;&gt;&lt;p class=&#34;cl-cf30ed24&#34;&gt;&lt;span class=&#34;cl-cf30d0f0&#34;&gt;min&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf316845&#34;&gt;&lt;p class=&#34;cl-cf30ed24&#34;&gt;&lt;span class=&#34;cl-cf30d0f0&#34;&gt;The smallest element of the set, or the smallest key of a map.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class=&#34;flextable-shadow-host&#34; id=&#34;16244f16-7d90-4d56-b7e5-75c4f30c3420&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+var dest = document.getElementById(&#34;16244f16-7d90-4d56-b7e5-75c4f30c3420&#34;);
+var template = document.getElementById(&#34;136cb7b7-2235-43c1-8ef0-972c2706031c&#34;);
+var caption = template.content.querySelector(&#34;caption&#34;);
+if(caption) {
+  caption.style.cssText = &#34;display:block;text-align:center;&#34;;
+  var newcapt = document.createElement(&#34;p&#34;);
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: &#39;open&#39;});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+&lt;/script&gt;
+
+&lt;p&gt;Scala collection performance characteristics can be found in the &lt;a href=&#34;https://docs.scala-lang.org/overviews/collections/performance-characteristics.html&#34;&gt;Scala documents&lt;/a&gt;. For comparison with the empirical results, the Scala performance table is given below.&lt;/p&gt;
+&lt;template id=&#34;e8f70bcd-fe84-4db6-b485-91e835ea7553&#34;&gt;&lt;style&gt;
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+&lt;/style&gt;&lt;div class=&#34;tabwid&#34;&gt;&lt;style&gt;.cl-cf593298{}.cl-cf51279c{font-family:&#39;DejaVu Sans&#39;;font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-cf513a8e{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cf518070{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf51807a{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf518084{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class=&#39;cl-cf593298&#39;&gt;
+&lt;caption class=&#34;Table Caption&#34;&gt;
+&lt;p&gt;&lt;span id=&#34;tab:unnamed-chunk-13&#34;&gt;Table 4: &lt;/span&gt;Performance Characteristics of Immutable Maps and Sets&lt;/p&gt;
+&lt;/caption&gt;
+&lt;thead&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-cf518084&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;Immutability&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518084&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;Collection&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518084&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;lookup&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518084&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;add&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518084&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;remove&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518084&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;min&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td  rowspan=&#34;4&#34;class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;Immutable&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;HashSet/HashMap&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;TreeSet/TreeMap&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;Log&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;Log&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;Log&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;Log&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;BitSet&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;eC1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;ListMap&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td  rowspan=&#34;4&#34;class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;Mutable&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;HashSet/HashMap&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;WeakHashMap&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;BitSet&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;aC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf518070&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-cf51807a&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;TreeSet&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf51807a&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;Log&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf51807a&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;Log&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf51807a&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;Log&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-cf51807a&#34;&gt;&lt;p class=&#34;cl-cf513a8e&#34;&gt;&lt;span class=&#34;cl-cf51279c&#34;&gt;Log&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class=&#34;flextable-shadow-host&#34; id=&#34;69b82f10-b794-415e-861a-8c49e6791c6f&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+var dest = document.getElementById(&#34;69b82f10-b794-415e-861a-8c49e6791c6f&#34;);
+var template = document.getElementById(&#34;e8f70bcd-fe84-4db6-b485-91e835ea7553&#34;);
+var caption = template.content.querySelector(&#34;caption&#34;);
+if(caption) {
+  caption.style.cssText = &#34;display:block;text-align:center;&#34;;
+  var newcapt = document.createElement(&#34;p&#34;);
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: &#39;open&#39;});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+&lt;/script&gt;
+
+&lt;p&gt;The performance results of each method and collection are shown using a scatter plot. We add a regression line to the plot to see the growth rate.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:unnamed-chunk-15&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/figure-html/unnamed-chunk-15-1.svg&#34; alt=&#34;Immutable Collection Methods Performance&#34; width=&#34;1440&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 4: Immutable Collection Methods Performance
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;A similar plot is plotted for mutable collection.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:unnamed-chunk-16&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/figure-html/unnamed-chunk-16-1.svg&#34; alt=&#34;Mutable Collection Methods Performance&#34; width=&#34;1440&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 5: Mutable Collection Methods Performance
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;refrences&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Refrences&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.scala-lang.org/overviews/collections/performance-characteristics.html&#34;&gt;Performance Characteristics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.lihaoyi.com/post/BenchmarkingScalaCollections.html&#34;&gt;Benchmarking Scala Collections&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        <item>
+        <title>Scala Data Collections Performance: Sequence Types</title>
+        <link>https://ehyaei.github.io/p/scala-data-structures/</link>
+        <pubDate>Mon, 03 Jan 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://ehyaei.github.io/p/scala-data-structures/</guid>
+        <description>&lt;img src="https://ehyaei.github.io/p/scala-data-structures/images/data_structure.jpg" alt="Featured image of post Scala Data Collections Performance: Sequence Types" /&gt;
+&lt;script src=&#34;https://ehyaei.github.io/p/scala-data-structures/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://ehyaei.github.io/p/scala-data-structures/index.en_files/tabwid/tabwid.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://ehyaei.github.io/p/scala-data-structures/index.en_files/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://ehyaei.github.io/p/scala-data-structures/index.en_files/echarts4r/echarts-en.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://ehyaei.github.io/p/scala-data-structures/index.en_files/echarts4r/ecStat.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://ehyaei.github.io/p/scala-data-structures/index.en_files/echarts4r/dataTool.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://ehyaei.github.io/p/scala-data-structures/index.en_files/echarts4r-binding/echarts4r.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://ehyaei.github.io/p/scala-data-structures/index.en_files/shine/shine.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Scala has different data collections and using the proper objects is important in optimizing the big data pipelines.&lt;/p&gt;
+&lt;p&gt;This post tries to study the characteristics of the Scala collection, such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Memory Usage,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Operations Time.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;from the point of view of practical benchmarks.
+We will try to study the performance of data collection in two posts; part one related to &lt;code&gt;Sequence&lt;/code&gt; collection, the second contains &lt;code&gt;Maps&lt;/code&gt; and &lt;code&gt;Sets&lt;/code&gt;.
+The diagram below demonstrates all of the collections in the package &lt;code&gt;scala.collection&lt;/code&gt;. These are all high-level abstract classes or traits with both mutable and immutable implementations.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:unnamed-chunk-2&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;images/seq.svg&#34; alt=&#34;Mutable and Immutable Data Collection High-level Abstract Classes or Traits&#34;  /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: Mutable and Immutable Data Collection High-level Abstract Classes or Traits
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;sequence-type&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Sequence Type&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;Seq&lt;/code&gt; trait represents sequences. A sequence is a type of iterable with a length and elements with fixed index positions beginning at 0.
+&lt;code&gt;Seq&lt;/code&gt; Collection divided to type of immutable and mutable.
+The following figure shows all &lt;code&gt;Seq&lt;/code&gt; collections in package &lt;code&gt;scala.collection.immutable&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:unnamed-chunk-3&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;images/Immutable.svg&#34; alt=&#34;Immutable Seq Data Collections&#34;  /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 2: Immutable Seq Data Collections
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;And the following figure shows &lt;code&gt;Seq&lt;/code&gt; collections in package &lt;code&gt;scala.collection.mutable&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:unnamed-chunk-4&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;images/Mutable1.svg&#34; alt=&#34;Mutable Seq Data Collections Part 1&#34;  /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 3: Mutable Seq Data Collections Part 1
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:unnamed-chunk-5&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;images/Mutable2.svg&#34; alt=&#34;Mutable Seq Data Collections Part 2&#34;  /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 4: Mutable Seq Data Collections Part 2
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Before seeing the collection benchmark tables, it is useful to review the collection definition and its properties.&lt;/p&gt;
+&lt;template id=&#34;b063e865-29d4-47b4-8f98-830ce8143175&#34;&gt;&lt;style&gt;
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+&lt;/style&gt;&lt;div class=&#34;tabwid&#34;&gt;&lt;style&gt;.cl-2d924772{}.cl-2d8a5846{font-family:&#39;DejaVu Sans&#39;;font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2d8a716e{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2d8abf52{width:3049pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d8abf5c{width:90.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d8abf66{width:92.3pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d8abf67{width:92.3pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d8abf70{width:3049pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d8abf71{width:90.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d8abf7a{width:92.3pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d8abf7b{width:3049pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d8abf84{width:90.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class=&#39;cl-2d924772&#39;&gt;
+&lt;caption class=&#34;Table Caption&#34;&gt;
+&lt;p&gt;&lt;span id=&#34;tab:unnamed-chunk-7&#34;&gt;Table 1: &lt;/span&gt;Collection Types and Descriptions&lt;/p&gt;
+&lt;/caption&gt;
+&lt;thead&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2d8abf84&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;Immutability&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf7a&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;Collection&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf7b&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;description&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td  rowspan=&#34;7&#34;class=&#34;cl-2d8abf5c&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;Immutable&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf66&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;List&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf52&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;A List is a collection that contains immutable data. The Scala List class holds a sequenced, linear list of items.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2d8abf66&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;Stream&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf52&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;The Stream is a lazy list where elements are evaluated only when they are needed. Streams have the same performance characteristics as lists.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2d8abf66&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;Vector&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf52&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;Vectors in Scala are immutable data structures providing random access for elements and is similar to the list. But, the list has incompetence of random access of elements.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2d8abf66&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;Queue&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf52&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;A Queue is a first-in, first-out (FIFO) data structure. Scala offers both an immutable queue and a mutable queue. A mutable queue can be updated or extended in place. It means one can change, add, or remove elements of a queue as a side effect. Queue is implemented as a pair of lists. One is used to insert the elements and the second to contain deleted elements. Elements are added to the first list and removed from the second list. The two most basic operations of Queue are Enqueue and Dequeue.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2d8abf66&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;Stack&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf52&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;A Stack is a data structure that follows the last-in, first-out(LIFO) principle. We can add or remove element only from one end called top. Scala has both mutable and immutable versions of a stack.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2d8abf66&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;Range&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf52&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;The Range can be defined as an organized series of uniformly separated Integers. It is helpful in supplying more strength with fewer methods, so operations performed here are very quick.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2d8abf66&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;String&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf52&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;A string is a sequence of characters. In Scala, objects of String are immutable which means they are constant and cannot be changed once created.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td  rowspan=&#34;7&#34;class=&#34;cl-2d8abf5c&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;Mutable&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf66&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;ArrayBuffer&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf52&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;To create a mutable, indexed sequence whose size can change, the ArrayBuffer class is used. Internally, an ArrayBuffer is an Array of elements, as well as the store’s current size of the array. When an element is added to an ArrayBuffer, its size is checked. If the underlying array isn’t full, then the element is directly added to the array. If the underlying array is full, then a larger array is constructed and all the elements are copied to the new array. The key is that the new array is constructed larger than what is required for the current addition.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2d8abf66&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;ListBuffer&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf52&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;The ListBuffer object is convenient when we want to build a list from front to back. It supports efficient prepend and append operations. The time taken to convert the ListBuffer into a List is constant.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2d8abf66&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;StringBuilder&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf52&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;A String object is immutable. When you need to perform repeated modifications to a string, we need a StringBuilder class. A StringBuilder is utilized to append input data to the internal buffer. Numerous operations like appending data, inserting data, and removing data are supported in StringBuilder.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2d8abf66&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;MutableList&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf52&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;A MutableList consists of a single linked list together with a pointer that refers to the terminal empty node of that list. This makes list append a constant time operation because it avoids having to traverse the list in search for its terminal node.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2d8abf66&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;ArraySeq&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf52&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;Array sequences are mutable sequences of a fixed size that store their elements internally in an Array[Object]. You would typically use an ArraySeq if you want an array for its performance characteristics, but you also want to create generic instances of the sequence where you do not know the type of the elements and you do not have a ClassTag to provide them at run-time.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2d8abf66&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;ArrayStack&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf52&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;An ArrayStack is a MutableStack that contains a FastList of data. ArrayStack iterates from top to bottom (LIFO order). The backing data structure grows and shrinks by 50% at a time, and size is constant. ArrayStack does not extend Vector, as does the Java Stack, which was one of the reasons for creating this data structure.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2d8abf67&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;Array&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2d8abf70&#34;&gt;&lt;p class=&#34;cl-2d8a716e&#34;&gt;&lt;span class=&#34;cl-2d8a5846&#34;&gt;Array is a special mutable kind of collection in Scala. it is a fixed size data structure that stores elements of the same data type.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class=&#34;flextable-shadow-host&#34; id=&#34;795a7448-d494-486b-b23a-0ae581231105&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+var dest = document.getElementById(&#34;795a7448-d494-486b-b23a-0ae581231105&#34;);
+var template = document.getElementById(&#34;b063e865-29d4-47b4-8f98-830ce8143175&#34;);
+var caption = template.content.querySelector(&#34;caption&#34;);
+if(caption) {
+  caption.style.cssText = &#34;display:block;text-align:center;&#34;;
+  var newcapt = document.createElement(&#34;p&#34;);
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: &#39;open&#39;});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+&lt;/script&gt;
+
+&lt;div id=&#34;benchmark-codes&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Benchmark Codes&lt;/h3&gt;
+&lt;p&gt;We created a Scala project with a sbt for assessment data collection.&lt;/p&gt;
+&lt;pre class=&#34;sbt&#34;&gt;&lt;code&gt;// build.sbt
+scalaVersion := &amp;quot;2.12.3&amp;quot;
+libraryDependencies += &amp;quot;org.apache.spark&amp;quot; %% &amp;quot;spark-core&amp;quot; % &amp;quot;3.1.2&amp;quot;
+libraryDependencies += &amp;quot;org.apache.spark&amp;quot; %% &amp;quot;spark-sql&amp;quot; % &amp;quot;3.1.2&amp;quot;
+enablePlugins(PackPlugin)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To calculate the size of an object, I find &lt;code&gt;org.apache.spark.util.SizeEstimator.estimate&lt;/code&gt;  function is useful.
+This function estimates the sizes of Java objects (number of bytes of memory they occupy).&lt;/p&gt;
+&lt;pre class=&#34;scala&#34;&gt;&lt;code&gt;import org.apache.spark.sql._
+import org.apache.spark.sql.functions.col
+import org.apache.spark.util.SizeEstimator.estimate
+import scala.collection.AbstractSeq
+import scala.collection.mutable
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To create a result dataframe and write the result, we use Spark (it is not necessary).&lt;/p&gt;
+&lt;pre class=&#34;scala&#34;&gt;&lt;code&gt;val spark = SparkSession
+  .builder()
+  .appName(&amp;quot;Collection_Benchmark&amp;quot;)
+  .master(&amp;quot;local[2]&amp;quot;)
+  .getOrCreate()
+
+import spark.implicits._&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We need a time-elapsing function to calculate run time, so use ’System.nanoTime` to measure time in nano resolution.&lt;/p&gt;
+&lt;pre class=&#34;scala&#34;&gt;&lt;code&gt;def timeElapsing(benchmarkFunction: =&amp;gt; Unit, message:Boolean = false)(times:Int = 1): Double = {
+  if(message) println(&amp;quot;Benchmark: IS Starting ...&amp;quot;)
+  val startTime = System.nanoTime()
+  for (_ &amp;lt;- 0 until times)
+    benchmarkFunction
+  val endTime = System.nanoTime()
+  val timeElapsed = (endTime - startTime).toDouble / times.toDouble
+  if(message) println(s&amp;quot;Operation Took $timeElapsed ms on average&amp;quot;)
+  timeElapsed
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Among all the data collections, only some of them have an &lt;code&gt;insert&lt;/code&gt; method. We define &lt;code&gt;insertTime&lt;/code&gt; function only for these collections, as you see below.&lt;/p&gt;
+&lt;pre class=&#34;scala&#34;&gt;&lt;code&gt;def insertTime(x:AbstractSeq[Int], n:Int, m:Int):Double = x match {
+  case x:ArrayBuffer[Int] =&amp;gt; timeElapsing(x.updated(m,0))(n)
+  case x:ListBuffer[Int] =&amp;gt; timeElapsing(x.updated(m,0))(n)
+  case x:mutable.MutableList[Int] =&amp;gt; timeElapsing(x.updated(m,0))(n)
+  case x:mutable.Queue[Int] =&amp;gt; timeElapsing(x.updated(m,0))(n)
+  case x:mutable.ArrayStack[Int] =&amp;gt; timeElapsing(x.updated(m,0))(n)
+  case _ =&amp;gt; -1
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The main parts of the benchmark are &lt;code&gt;benchmark***&lt;/code&gt; functions, which contain the time-elapsed of the main methods.&lt;/p&gt;
+&lt;pre class=&#34;scala&#34;&gt;&lt;code&gt;def benchmarkSeq(x:AbstractSeq[Int], n:Int, m:Int): Map[String, Double] = {
+  Map(
+    &amp;quot;volume&amp;quot; -&amp;gt; estimate(x),
+    &amp;quot;head&amp;quot; -&amp;gt; timeElapsing(x.head)(n),
+    &amp;quot;tail&amp;quot; -&amp;gt; timeElapsing(x.tail)(n),
+    &amp;quot;apply&amp;quot; -&amp;gt; timeElapsing(x.apply(m))(n),
+    &amp;quot;update&amp;quot; -&amp;gt; timeElapsing(x.updated(m,0))(n),
+    &amp;quot;prepend&amp;quot; -&amp;gt; timeElapsing(0+:x)(n),
+    &amp;quot;append&amp;quot; -&amp;gt; timeElapsing(x:+0)(n),
+    &amp;quot;insert&amp;quot; -&amp;gt; insertTime(x, n, m)
+  )
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Similar to &lt;code&gt;benchmarkSeq&lt;/code&gt; we define &lt;code&gt;benchmarkString&lt;/code&gt;, &lt;code&gt;benchmarkStringBuilder&lt;/code&gt; and
+&lt;code&gt;benchmarkArray&lt;/code&gt; functions.&lt;/p&gt;
+&lt;p&gt;To calculate correct time elapsing related to Array we define &lt;code&gt;Array[Object]&lt;/code&gt;&lt;/p&gt;
+&lt;pre class=&#34;scala&#34;&gt;&lt;code&gt;def obj = new Object()
+def benchmarkArrayBoxed(x:Array[Object], n:Int, m:Int): Map[String, Double] =  { Map(
+  &amp;quot;volume&amp;quot; -&amp;gt; estimate(x),
+  &amp;quot;head&amp;quot; -&amp;gt; timeElapsing(x.head)(n),
+  &amp;quot;tail&amp;quot; -&amp;gt; timeElapsing(x.tail)(n),
+  &amp;quot;apply&amp;quot; -&amp;gt; timeElapsing(x.apply(m))(n),
+  &amp;quot;update&amp;quot; -&amp;gt; timeElapsing(x.updated(m,0))(n),
+  &amp;quot;prepend&amp;quot; -&amp;gt; timeElapsing(obj+:x)(n),
+  &amp;quot;append&amp;quot; -&amp;gt; timeElapsing(x:+obj)(n),
+  &amp;quot;insert&amp;quot; -&amp;gt; timeElapsing(x.updated(m,0))(n))
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;When determining the size of objects, we consider two measurements: size and method. Objects with a length of &lt;span class=&#34;math inline&#34;&gt;\(16^0,16^1,..., 16^5\)&lt;/span&gt; are generated to find their size. For checking the performance of methods, objects with a size of &lt;span class=&#34;math inline&#34;&gt;\(10000, 200000,..., 1000000\)&lt;/span&gt; are generated.&lt;/p&gt;
+&lt;pre class=&#34;scala&#34;&gt;&lt;code&gt;val sizes = ( 0 to 5).map(x =&amp;gt; math.pow(16,x).toInt) ++ (1 to 10).map(_*100000)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see below, each method is run 100 times on objects, and the results are collected.&lt;/p&gt;
+&lt;pre class=&#34;scala&#34;&gt;&lt;code&gt;val stats = for(s &amp;lt;- sizes) yield {
+  val integers = 0 until s
+  List(
+    (&amp;quot;Immutable_List&amp;quot;, integers.toList),
+    (&amp;quot;Immutable_Stream&amp;quot;, integers.toStream),
+    (&amp;quot;Immutable_Vector&amp;quot;, integers.toVector),
+    (&amp;quot;Immutable_Queue&amp;quot;, scala.collection.immutable.Queue(integers: _*)),
+    (&amp;quot;Immutable_Range&amp;quot;, integers),
+    (&amp;quot;Immutable_String&amp;quot;, &amp;quot;1&amp;quot; * s),
+    (&amp;quot;Mutable_ArrayBuffer&amp;quot;, scala.collection.mutable.ArrayBuffer(integers: _*)),
+    (&amp;quot;Mutable_ListBuffer&amp;quot;, scala.collection.mutable.ListBuffer(integers: _*)),
+    (&amp;quot;Mutable_StringBuilder&amp;quot;, new scala.collection.mutable.StringBuilder(&amp;quot;1&amp;quot; * s)),
+    (&amp;quot;Mutable_MutableList&amp;quot;, scala.collection.mutable.MutableList(integers: _*)),
+    (&amp;quot;Mutable_Queue&amp;quot;, scala.collection.mutable.Queue(integers: _*)),
+    (&amp;quot;Mutable_ArraySeq&amp;quot;, scala.collection.mutable.ArraySeq(integers: _*)),
+    (&amp;quot;Mutable_ArrayStack&amp;quot;, scala.collection.mutable.ArrayStack(integers: _*)),
+    (&amp;quot;Mutable_Array&amp;quot;, integers.toArray),
+    (&amp;quot;Mutable_Boxed_Array&amp;quot;, {
+      val boxedArray = new Array[Object](s)
+      var i = 0
+      while (i &amp;lt; s) {
+        boxedArray(i) = obj; i += 1
+      }
+      boxedArray
+    })
+
+  ).map {
+    case (c, cl: AbstractSeq[Int]) =&amp;gt; Map(&amp;quot;size&amp;quot; -&amp;gt; s.toString, &amp;quot;collection&amp;quot; -&amp;gt; c) ++ 
+    benchmarkSeq(cl, 100, s - 1).map(x =&amp;gt; (x._1, x._2.toString))
+    case (c, cl: Array[Object]) =&amp;gt; Map(&amp;quot;size&amp;quot; -&amp;gt; s.toString, &amp;quot;collection&amp;quot; -&amp;gt; c) ++ 
+    benchmarkArrayBoxed(cl, 100, s - 1).map(x =&amp;gt; (x._1, x._2.toString))
+    case (c, cl: Array[Int]) =&amp;gt; Map(&amp;quot;size&amp;quot; -&amp;gt; s.toString, &amp;quot;collection&amp;quot; -&amp;gt; c) ++ 
+    benchmarkArray(cl, 100, s - 1).map(x =&amp;gt; (x._1, x._2.toString))
+    case (c, cl: String) =&amp;gt; Map(&amp;quot;size&amp;quot; -&amp;gt; s.toString, &amp;quot;collection&amp;quot; -&amp;gt; c) ++ 
+    benchmarkString(cl, 100, s - 1).map(x =&amp;gt; (x._1, x._2.toString))
+    case (c, cl: StringBuilder) =&amp;gt; Map(&amp;quot;size&amp;quot; -&amp;gt; s.toString, &amp;quot;collection&amp;quot; -&amp;gt; c) ++ 
+    benchmarkStringBuilder(cl, 100, s - 1).map(x =&amp;gt; (x._1, x._2.toString))
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The last step is writing the results as a csv file with &lt;code&gt;spark.write&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;scala&#34;&gt;&lt;code&gt;val colNames = stats(0).head.toList.sortBy(_._1).map(_._1)
+  .zipWithIndex.map(x =&amp;gt; col(&amp;quot;value&amp;quot;)(x._2).as(x._1))
+
+stats.flatten.map(x =&amp;gt; x.toList.sortBy(_._1).map(_._2))
+  .toDF.select(colNames:_*)
+  .coalesce(1).write.option(&amp;quot;header&amp;quot;,&amp;quot;true&amp;quot;).mode(&amp;quot;overwrite&amp;quot;)
+  .csv(&amp;quot;./collection_seq_size_benchmark.csv&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;object-size-in-memory&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Object Size in Memory&lt;/h3&gt;
+&lt;p&gt;The benchmark data is now available! The table below displays the expected size of various collections of different sizes in bytes.&lt;/p&gt;
+&lt;template id=&#34;558d545c-0cfe-4e5c-a82d-fbcaf0f52333&#34;&gt;&lt;style&gt;
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+&lt;/style&gt;&lt;div class=&#34;tabwid&#34;&gt;&lt;style&gt;.cl-2e0a8a20{}.cl-2df8c68c{font-family:&#39;DejaVu Sans&#39;;font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2df8c6b4{font-family:&#39;DejaVu Sans&#39;;font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2df8f88c{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2df8f896{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2df9cd98{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2df9cdac{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2df9cdad{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(102, 102, 102, 1.00);border-top: 0.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2df9cdb6{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(102, 102, 102, 1.00);border-top: 0.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2df9cdc0{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2df9cdc1{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2df9cdca{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2df9cdd4{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class=&#39;cl-2e0a8a20&#39;&gt;
+&lt;caption class=&#34;Table Caption&#34;&gt;
+&lt;p&gt;&lt;span id=&#34;tab:unnamed-chunk-18&#34;&gt;Table 2: &lt;/span&gt;Estimated Size of Scala Collections[Int] In Different Size (in bytes)&lt;/p&gt;
+&lt;/caption&gt;
+&lt;thead&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2df9cdd4&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c68c&#34;&gt;Immutability&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdd4&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c68c&#34;&gt;Collection&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdca&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c68c&#34;&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdca&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c68c&#34;&gt;16&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdca&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c68c&#34;&gt;256&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdca&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c68c&#34;&gt;4,096&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdca&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c68c&#34;&gt;65,536&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdca&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c68c&#34;&gt;1,048,576&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td  rowspan=&#34;6&#34;class=&#34;cl-2df9cdac&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;Immutable&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdac&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;List&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cd98&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;56&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cd98&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;656&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cd98&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;10,256&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cd98&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;163,856&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cd98&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;2,621,456&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cd98&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;41,943,056&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2df9cdad&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;Queue&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;80&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;680&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;10,280&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;163,880&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;2,621,480&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;41,943,080&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2df9cdad&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;Range&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2df9cdad&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;Stream&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;120&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;120&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;120&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;120&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;120&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;120&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2df9cdad&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;String&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;48&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;72&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;552&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;8,232&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;131,112&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;2,097,192&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2df9cdad&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;Vector&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;216&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;456&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;5,448&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;84,744&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;1,353,192&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;21,648,072&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td  rowspan=&#34;9&#34;class=&#34;cl-2df9cdc0&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;Mutable&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdad&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;Array&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;24&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;80&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;1,040&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;16,400&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;262,160&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;4,194,320&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2df9cdad&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;Array[Object]&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;336&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;5,136&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;80,400&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;1,310,160&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;20,970,320&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2df9cdad&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;ArrayBuffer&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;120&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;360&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;5,160&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;80,424&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;1,310,184&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;20,970,344&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2df9cdad&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;ArraySeq&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;64&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;360&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;5,160&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;80,424&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;1,310,184&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;20,970,344&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2df9cdad&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;ArrayStack&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;64&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;360&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;5,160&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;80,424&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;1,310,184&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;20,970,344&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2df9cdad&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;ListBuffer&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;88&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;688&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;10,288&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;163,888&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;2,621,488&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;41,943,088&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2df9cdad&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;MutableList&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;88&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;688&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;10,288&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;163,888&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;2,621,488&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;41,943,088&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2df9cdad&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;Queue&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;88&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;688&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;10,288&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;163,888&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;2,621,488&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdb6&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;41,943,088&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2df9cdc0&#34;&gt;&lt;p class=&#34;cl-2df8f88c&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;StringBuilder&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdc1&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;96&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdc1&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;120&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdc1&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;600&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdc1&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;8,280&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdc1&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;131,160&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2df9cdc1&#34;&gt;&lt;p class=&#34;cl-2df8f896&#34;&gt;&lt;span class=&#34;cl-2df8c6b4&#34;&gt;2,097,240&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class=&#34;flextable-shadow-host&#34; id=&#34;0570a6b2-75d0-4da8-8eb9-822489d60daa&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+var dest = document.getElementById(&#34;0570a6b2-75d0-4da8-8eb9-822489d60daa&#34;);
+var template = document.getElementById(&#34;558d545c-0cfe-4e5c-a82d-fbcaf0f52333&#34;);
+var caption = template.content.querySelector(&#34;caption&#34;);
+if(caption) {
+  caption.style.cssText = &#34;display:block;text-align:center;&#34;;
+  var newcapt = document.createElement(&#34;p&#34;);
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: &#39;open&#39;});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+&lt;/script&gt;
+
+&lt;p&gt;The average memory size of each object is calculated and shown below.&lt;/p&gt;
+&lt;div id=&#34;htmlwidget-1&#34; style=&#34;width:100%;height:500px;&#34; class=&#34;echarts4r html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-1&#34;&gt;{&#34;x&#34;:{&#34;theme&#34;:&#34;shine&#34;,&#34;tl&#34;:false,&#34;draw&#34;:true,&#34;renderer&#34;:&#34;canvas&#34;,&#34;events&#34;:[],&#34;buttons&#34;:[],&#34;opts&#34;:{&#34;xAxis&#34;:[{&#34;show&#34;:true,&#34;name&#34;:&#34;Collection&#34;}],&#34;yAxis&#34;:[{&#34;data&#34;:[&#34;Vector&#34;,&#34;StringBuilder&#34;,&#34;String&#34;,&#34;Queue&#34;,&#34;MutableList&#34;,&#34;ListBuffer&#34;,&#34;List&#34;,&#34;ArrayStack&#34;,&#34;ArraySeq&#34;,&#34;ArrayBuffer&#34;,&#34;Array[Object]&#34;,&#34;Array&#34;],&#34;type&#34;:&#34;category&#34;,&#34;boundaryGap&#34;:true,&#34;name&#34;:&#34;Volume&#34;}],&#34;legend&#34;:{&#34;data&#34;:[&#34;Immutable&#34;,&#34;Mutable&#34;]},&#34;series&#34;:[{&#34;data&#34;:[{&#34;value&#34;:[&#34;55&#34;,&#34;Vector&#34;]},{&#34;value&#34;:[&#34;10&#34;,&#34;String&#34;]},{&#34;value&#34;:[&#34;47&#34;,&#34;Queue&#34;]},{&#34;value&#34;:[&#34;43&#34;,&#34;List&#34;]}],&#34;name&#34;:&#34;Immutable&#34;,&#34;type&#34;:&#34;bar&#34;,&#34;yAxisIndex&#34;:0,&#34;xAxisIndex&#34;:0,&#34;coordinateSystem&#34;:&#34;cartesian2d&#34;},{&#34;data&#34;:[{&#34;value&#34;:[&#34;19&#34;,&#34;StringBuilder&#34;]},{&#34;value&#34;:[&#34;49&#34;,&#34;Queue&#34;]},{&#34;value&#34;:[&#34;49&#34;,&#34;MutableList&#34;]},{&#34;value&#34;:[&#34;49&#34;,&#34;ListBuffer&#34;]},{&#34;value&#34;:[&#34;28&#34;,&#34;ArrayStack&#34;]},{&#34;value&#34;:[&#34;28&#34;,&#34;ArraySeq&#34;]},{&#34;value&#34;:[&#34;37&#34;,&#34;ArrayBuffer&#34;]},{&#34;value&#34;:[&#34;23&#34;,&#34;Array[Object]&#34;]},{&#34;value&#34;:[&#34; 8&#34;,&#34;Array&#34;]}],&#34;name&#34;:&#34;Mutable&#34;,&#34;type&#34;:&#34;bar&#34;,&#34;yAxisIndex&#34;:0,&#34;xAxisIndex&#34;:0,&#34;coordinateSystem&#34;:&#34;cartesian2d&#34;}],&#34;title&#34;:[{&#34;text&#34;:&#34;Average Collection[Int] Volume in Bytes&#34;}],&#34;tooltip&#34;:{&#34;trigger&#34;:&#34;axis&#34;,&#34;textStyle&#34;:{&#34;color&#34;:&#34;#ffffff&#34;}}},&#34;dispose&#34;:true},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;/div&gt;
+&lt;div id=&#34;methods-performance&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Methods Performance&lt;/h3&gt;
+&lt;p&gt;Before seeing the benchmark result, it is better to have an overview of the methods that are applied to objects. The below table has more details.&lt;/p&gt;
+&lt;template id=&#34;35e42ec6-2745-4a2b-8415-fc54fa2caf43&#34;&gt;&lt;style&gt;
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+&lt;/style&gt;&lt;div class=&#34;tabwid&#34;&gt;&lt;style&gt;.cl-2e733dfe{}.cl-2e639368{font-family:&#39;DejaVu Sans&#39;;font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2e63c522{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2e64389a{width:936.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6438b8{width:79.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6438cc{width:936.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6438d6{width:79.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6438d7{width:936.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6438e0{width:79.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class=&#39;cl-2e733dfe&#39;&gt;
+&lt;caption class=&#34;Table Caption&#34;&gt;
+&lt;p&gt;&lt;span id=&#34;tab:unnamed-chunk-21&#34;&gt;Table 3: &lt;/span&gt;Operations That Are Tested on Sequence Types&lt;/p&gt;
+&lt;/caption&gt;
+&lt;thead&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2e6438e0&#34;&gt;&lt;p class=&#34;cl-2e63c522&#34;&gt;&lt;span class=&#34;cl-2e639368&#34;&gt;operations&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2e6438d7&#34;&gt;&lt;p class=&#34;cl-2e63c522&#34;&gt;&lt;span class=&#34;cl-2e639368&#34;&gt;description&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2e6438b8&#34;&gt;&lt;p class=&#34;cl-2e63c522&#34;&gt;&lt;span class=&#34;cl-2e639368&#34;&gt;head&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2e64389a&#34;&gt;&lt;p class=&#34;cl-2e63c522&#34;&gt;&lt;span class=&#34;cl-2e639368&#34;&gt;Selecting the first element of the sequence.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2e6438b8&#34;&gt;&lt;p class=&#34;cl-2e63c522&#34;&gt;&lt;span class=&#34;cl-2e639368&#34;&gt;tail&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2e64389a&#34;&gt;&lt;p class=&#34;cl-2e63c522&#34;&gt;&lt;span class=&#34;cl-2e639368&#34;&gt;Producing a new sequence that consists of all elements except the first one.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2e6438b8&#34;&gt;&lt;p class=&#34;cl-2e63c522&#34;&gt;&lt;span class=&#34;cl-2e639368&#34;&gt;apply&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2e64389a&#34;&gt;&lt;p class=&#34;cl-2e63c522&#34;&gt;&lt;span class=&#34;cl-2e639368&#34;&gt;Indexing.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2e6438b8&#34;&gt;&lt;p class=&#34;cl-2e63c522&#34;&gt;&lt;span class=&#34;cl-2e639368&#34;&gt;update&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2e64389a&#34;&gt;&lt;p class=&#34;cl-2e63c522&#34;&gt;&lt;span class=&#34;cl-2e639368&#34;&gt;Functional update (with updated) for immutable sequences, side-effecting update (with update for mutable sequences).&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2e6438b8&#34;&gt;&lt;p class=&#34;cl-2e63c522&#34;&gt;&lt;span class=&#34;cl-2e639368&#34;&gt;prepend&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2e64389a&#34;&gt;&lt;p class=&#34;cl-2e63c522&#34;&gt;&lt;span class=&#34;cl-2e639368&#34;&gt;Adding an element to the front of the sequence. For immutable sequences, this produces a new sequence. For mutable sequences it modifies the existing sequence.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2e6438b8&#34;&gt;&lt;p class=&#34;cl-2e63c522&#34;&gt;&lt;span class=&#34;cl-2e639368&#34;&gt;append&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2e64389a&#34;&gt;&lt;p class=&#34;cl-2e63c522&#34;&gt;&lt;span class=&#34;cl-2e639368&#34;&gt;Adding an element and the end of the sequence. For immutable sequences, this produces a new sequence. For mutable sequences it modifies the existing sequence.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2e6438d6&#34;&gt;&lt;p class=&#34;cl-2e63c522&#34;&gt;&lt;span class=&#34;cl-2e639368&#34;&gt;insert&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2e6438cc&#34;&gt;&lt;p class=&#34;cl-2e63c522&#34;&gt;&lt;span class=&#34;cl-2e639368&#34;&gt;Inserting an element at an arbitrary position in the sequence. This is only supported directly for mutable sequences.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class=&#34;flextable-shadow-host&#34; id=&#34;d89761dc-a0d7-406a-83dd-bc3b450485ee&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+var dest = document.getElementById(&#34;d89761dc-a0d7-406a-83dd-bc3b450485ee&#34;);
+var template = document.getElementById(&#34;35e42ec6-2745-4a2b-8415-fc54fa2caf43&#34;);
+var caption = template.content.querySelector(&#34;caption&#34;);
+if(caption) {
+  caption.style.cssText = &#34;display:block;text-align:center;&#34;;
+  var newcapt = document.createElement(&#34;p&#34;);
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: &#39;open&#39;});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+&lt;/script&gt;
+
+&lt;p&gt;We can find performance characteristics of Scala collections in the &lt;a href=&#34;https://docs.scala-lang.org/overviews/collections/performance-characteristics.html&#34;&gt;Scala documents&lt;/a&gt;. The Scala performance table is provided below for comparison with the empirical results.&lt;/p&gt;
+&lt;template id=&#34;7e6a5635-77d5-4a6a-aa5e-bee2d9958536&#34;&gt;&lt;style&gt;
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+&lt;/style&gt;&lt;div class=&#34;tabwid&#34;&gt;&lt;style&gt;.cl-2eba60e4{}.cl-2ea9112c{font-family:&#39;DejaVu Sans&#39;;font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2ea91140{font-family:&#39;DejaVu Sans&#39;;font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2ea9390e{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2eaab892{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2eaab8c4{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(102, 102, 102, 1.00);border-top: 0.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2eaab8ce{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2eaab8d8{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class=&#39;cl-2eba60e4&#39;&gt;
+&lt;caption class=&#34;Table Caption&#34;&gt;
+&lt;p&gt;&lt;span id=&#34;tab:unnamed-chunk-22&#34;&gt;Table 4: &lt;/span&gt;Performance characteristics of sequence types&lt;/p&gt;
+&lt;/caption&gt;
+&lt;thead&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2eaab8d8&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea9112c&#34;&gt;Immutability&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8d8&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea9112c&#34;&gt;Collection&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8d8&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea9112c&#34;&gt;head&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8d8&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea9112c&#34;&gt;tail&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8d8&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea9112c&#34;&gt;apply&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8d8&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea9112c&#34;&gt;update&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8d8&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea9112c&#34;&gt;prepend&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8d8&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea9112c&#34;&gt;append&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8d8&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea9112c&#34;&gt;insert&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td  rowspan=&#34;7&#34;class=&#34;cl-2eaab892&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;Immutable&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab892&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;List&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab892&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab892&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab892&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab892&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab892&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab892&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab892&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;Stream&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;Vector&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;Stack&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;Queue&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;aC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;aC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;Range&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;String&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td  rowspan=&#34;9&#34;class=&#34;cl-2eaab8ce&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;Mutable&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;ArrayBuffer&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;aC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;ListBuffer&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;StringBuilder&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;aC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;MutableList&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;Queue&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;ArraySeq&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;-&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;-&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;-&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;Stack&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;ArrayStack&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;aC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8c4&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2eaab8ce&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;Array&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8ce&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8ce&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8ce&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8ce&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8ce&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;-&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8ce&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;-&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2eaab8ce&#34;&gt;&lt;p class=&#34;cl-2ea9390e&#34;&gt;&lt;span class=&#34;cl-2ea91140&#34;&gt;-&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class=&#34;flextable-shadow-host&#34; id=&#34;855e30eb-2561-461b-bd44-5efe4f6f317f&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+var dest = document.getElementById(&#34;855e30eb-2561-461b-bd44-5efe4f6f317f&#34;);
+var template = document.getElementById(&#34;7e6a5635-77d5-4a6a-aa5e-bee2d9958536&#34;);
+var caption = template.content.querySelector(&#34;caption&#34;);
+if(caption) {
+  caption.style.cssText = &#34;display:block;text-align:center;&#34;;
+  var newcapt = document.createElement(&#34;p&#34;);
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: &#39;open&#39;});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+&lt;/script&gt;
+
+&lt;template id=&#34;1c4d885c-58db-40b6-a10d-64b8dd5ff34d&#34;&gt;&lt;style&gt;
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+&lt;/style&gt;&lt;div class=&#34;tabwid&#34;&gt;&lt;style&gt;.cl-2eddd1f0{}.cl-2ed31148{font-family:&#39;DejaVu Sans&#39;;font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2ed33a6a{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2ed383d0{width:1083.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2ed383e4{width:91.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2ed383e5{width:1083.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2ed383ee{width:91.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2ed383ef{width:1083.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2ed383f8{width:91.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class=&#39;cl-2eddd1f0&#39;&gt;
+&lt;caption class=&#34;Table Caption&#34;&gt;
+&lt;p&gt;&lt;span id=&#34;tab:unnamed-chunk-23&#34;&gt;Table 5: &lt;/span&gt;Performance characteristics of sequence types&lt;/p&gt;
+&lt;/caption&gt;
+&lt;thead&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2ed383f8&#34;&gt;&lt;p class=&#34;cl-2ed33a6a&#34;&gt;&lt;span class=&#34;cl-2ed31148&#34;&gt;performance&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2ed383ef&#34;&gt;&lt;p class=&#34;cl-2ed33a6a&#34;&gt;&lt;span class=&#34;cl-2ed31148&#34;&gt;description&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2ed383e4&#34;&gt;&lt;p class=&#34;cl-2ed33a6a&#34;&gt;&lt;span class=&#34;cl-2ed31148&#34;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2ed383d0&#34;&gt;&lt;p class=&#34;cl-2ed33a6a&#34;&gt;&lt;span class=&#34;cl-2ed31148&#34;&gt;The operation takes (fast) constant time.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2ed383e4&#34;&gt;&lt;p class=&#34;cl-2ed33a6a&#34;&gt;&lt;span class=&#34;cl-2ed31148&#34;&gt;eC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2ed383d0&#34;&gt;&lt;p class=&#34;cl-2ed33a6a&#34;&gt;&lt;span class=&#34;cl-2ed31148&#34;&gt;The operation takes effectively constant time, but this might depend on some assumptions such as maximum length of a vector or distribution of hash keys.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2ed383e4&#34;&gt;&lt;p class=&#34;cl-2ed33a6a&#34;&gt;&lt;span class=&#34;cl-2ed31148&#34;&gt;aC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2ed383d0&#34;&gt;&lt;p class=&#34;cl-2ed33a6a&#34;&gt;&lt;span class=&#34;cl-2ed31148&#34;&gt;The operation takes amortized constant time. Some invocations of the operation might take longer, but if many operations are performed on average only constant time per operation is taken.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2ed383e4&#34;&gt;&lt;p class=&#34;cl-2ed33a6a&#34;&gt;&lt;span class=&#34;cl-2ed31148&#34;&gt;Log&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2ed383d0&#34;&gt;&lt;p class=&#34;cl-2ed33a6a&#34;&gt;&lt;span class=&#34;cl-2ed31148&#34;&gt;The operation takes time proportional to the logarithm of the collection size.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2ed383e4&#34;&gt;&lt;p class=&#34;cl-2ed33a6a&#34;&gt;&lt;span class=&#34;cl-2ed31148&#34;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2ed383d0&#34;&gt;&lt;p class=&#34;cl-2ed33a6a&#34;&gt;&lt;span class=&#34;cl-2ed31148&#34;&gt;The operation is linear, that is it takes time proportional to the collection size.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&#34;overflow-wrap:break-word;&#34;&gt;&lt;td class=&#34;cl-2ed383ee&#34;&gt;&lt;p class=&#34;cl-2ed33a6a&#34;&gt;&lt;span class=&#34;cl-2ed31148&#34;&gt;-&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class=&#34;cl-2ed383e5&#34;&gt;&lt;p class=&#34;cl-2ed33a6a&#34;&gt;&lt;span class=&#34;cl-2ed31148&#34;&gt;The operation is not supported.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class=&#34;flextable-shadow-host&#34; id=&#34;90f98ecc-1df5-4227-b9ab-c01bf2cb0e29&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+var dest = document.getElementById(&#34;90f98ecc-1df5-4227-b9ab-c01bf2cb0e29&#34;);
+var template = document.getElementById(&#34;1c4d885c-58db-40b6-a10d-64b8dd5ff34d&#34;);
+var caption = template.content.querySelector(&#34;caption&#34;);
+if(caption) {
+  caption.style.cssText = &#34;display:block;text-align:center;&#34;;
+  var newcapt = document.createElement(&#34;p&#34;);
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: &#39;open&#39;});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+&lt;/script&gt;
+
+&lt;p&gt;The performance results of each method and collection are plotted as a scatter plot. We add a regression line to the plot to see the growth rate. The plot below shows the performance of the immutable collection.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:unnamed-chunk-25&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;https://ehyaei.github.io/p/scala-data-structures/index.en_files/figure-html/unnamed-chunk-25-1.svg&#34; alt=&#34;Immutable Collection Methods Performance&#34; width=&#34;1440&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 5: Immutable Collection Methods Performance
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;A similar plot is plotted for mutable collection.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:unnamed-chunk-26&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;https://ehyaei.github.io/p/scala-data-structures/index.en_files/figure-html/unnamed-chunk-26-1.svg&#34; alt=&#34;Mutable Collection Methods Performance&#34; width=&#34;1440&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 6: Mutable Collection Methods Performance
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;refrences&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Refrences&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.scala-lang.org/overviews/collections/performance-characteristics.html&#34;&gt;Performance Characteristics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.lihaoyi.com/post/BenchmarkingScalaCollections.html&#34;&gt;Benchmarking Scala Collections&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        <item>
         <title>Why Do We Need to Explore Datasets?</title>
         <link>https://ehyaei.github.io/p/why-do-we-need-to-explore-datasetsimages/city.jpg/</link>
         <pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate>

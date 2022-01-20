@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='In this post, we try to understand the size and performance of the Sets and Maps data collection. In the first, we review the structure of the Mutable and Immutabla Sets and Mapscollections.
+ Figure 1: Immutable Maps and Sets Data Collection   Figure 2: Mutable Maps Data Collection   Figure 3: Mutable Sets Data Collection  A quick review of each collection application may be found in the table below.'><title>Scala Data Collections Performance: Maps and Sets</title>
+
+<link rel='canonical' href='https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Scala Data Collections Performance: Maps and Sets'>
+<meta property='og:description' content='In this post, we try to understand the size and performance of the Sets and Maps data collection. In the first, we review the structure of the Mutable and Immutabla Sets and Mapscollections.
+ Figure 1: Immutable Maps and Sets Data Collection   Figure 2: Mutable Maps Data Collection   Figure 3: Mutable Sets Data Collection  A quick review of each collection application may be found in the table below.'>
+<meta property='og:url' content='https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/'>
+<meta property='og:site_name' content='Random Walks in Datasets'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Benchmark' /><meta property='article:published_time' content='2022-01-05T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-01-05T00:00:00&#43;00:00'/><meta property='og:image' content='https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/images/wallpaper.png' />
+<meta name="twitter:title" content="Scala Data Collections Performance: Maps and Sets">
+<meta name="twitter:description" content="In this post, we try to understand the size and performance of the Sets and Maps data collection. In the first, we review the structure of the Mutable and Immutabla Sets and Mapscollections.
+ Figure 1: Immutable Maps and Sets Data Collection   Figure 2: Mutable Maps Data Collection   Figure 3: Mutable Sets Data Collection  A quick review of each collection application may be found in the table below."><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/images/wallpaper.png' />
+    </head>
+    <body class="
+    article-page 
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        on-phone--column extended
+    
+">
+    
+        <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/RWLogo_hu5ba0141f26cb19efa386b8697de3956c_242030_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+            </figure>
+            
+        
+        <h1 class="site-name"><a href="https://ehyaei.github.io/">Random Walks in Datasets</a></h1>
+        <h2 class="site-description">A way to understand our world directly.</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about-me/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About Me</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/gallery/' >
+                
+                    <?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+<g>
+	<g>
+		<path d="M494.933,38.4h-409.6c-9.412,0-17.067,7.654-17.067,17.067v17.067H51.2c-9.412,0-17.067,7.654-17.067,17.067v17.067
+			H17.067C7.654,106.667,0,114.321,0,123.733v332.8c0,9.412,7.654,17.067,17.067,17.067h409.6c9.412,0,17.067-7.654,17.067-17.067
+			v-17.067H460.8c9.412,0,17.067-7.654,17.067-17.067v-17.067h17.067c9.412,0,17.067-7.654,17.067-17.067v-332.8
+			C512,46.054,504.346,38.4,494.933,38.4z M17.067,123.733h409.6l0.009,190.635l-44.783-51.183c-3.251-3.721-9.6-3.721-12.851,0
+			l-54.067,61.79L167.799,194.159c-3.234-2.884-8.098-2.884-11.332,0L17.067,318.071V123.733z M426.684,431.01v25.523H17.067V340.89
+			l145.067-128.947l147.934,131.49c1.69,1.51,3.942,2.193,6.204,2.142c2.278-0.145,4.395-1.186,5.888-2.901l53.308-60.911
+			l51.209,58.53l0.008,90.573c0,0.017-0.017,0.043-0.017,0.068S426.684,430.985,426.684,431.01z M460.8,422.4h-17.067V123.733
+			c0-9.412-7.654-17.067-17.067-17.067H51.2V89.6h409.6V422.4z M494.933,388.267h-17.067V89.6c0-9.412-7.654-17.067-17.067-17.067
+			H85.333V55.467h409.6V388.267z"/>
+	</g>
+</g>
+<g>
+	<g>
+		<path d="M307.2,174.933c-18.825,0-34.133,15.309-34.133,34.133S288.375,243.2,307.2,243.2s34.133-15.309,34.133-34.133
+			S326.025,174.933,307.2,174.933z M307.2,226.133c-9.412,0-17.067-7.654-17.067-17.067c0-9.412,7.654-17.067,17.067-17.067
+			s17.067,7.654,17.067,17.067C324.267,218.479,316.612,226.133,307.2,226.133z"/>
+	</g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+
+                
+                <span>Gallery</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/packages/' >
+                
+                    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   class="icon icon-tabler icon-tabler-chevron-left"
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
+   stroke-width="2"
+   stroke="currentColor"
+   fill="none"
+   stroke-linecap="round"
+   stroke-linejoin="round"
+   version="1.1"
+   id="svg6"
+   sodipodi:docname="packages.svg"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15)">
+  <metadata
+     id="metadata12">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs10" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="778"
+     inkscape:window-height="480"
+     id="namedview8"
+     showgrid="false"
+     inkscape:zoom="39.833333"
+     inkscape:cx="12"
+     inkscape:cy="12"
+     inkscape:window-x="0"
+     inkscape:window-y="34"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg6" />
+  <path
+     stroke="none"
+     d="M0 0h24v24H0z"
+     id="path2" />
+  <polyline
+     points="15 6 9 12 15 18"
+     id="polyline4"
+     transform="matrix(-1,0,0,1,24.000041,0)" />
+</svg>
+
+                
+                <span>Packages</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/categories/' target="_blank">
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>Categories</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='https://github.com/Ehyaei' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+                
+                <span>Github</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='https://twitter.com/AhmadEhyaei' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+                
+                <span>Twitter</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+    
+<main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/scala-data-collections-performance-sequence-types/">
+                <img src="/p/scala-data-collections-performance-sequence-types/images/wallpaper_hu567b4ea1dc9afa647d3ebd82ba5a79ad_1891369_800x0_resize_box_3.png"
+                        srcset="/p/scala-data-collections-performance-sequence-types/images/wallpaper_hu567b4ea1dc9afa647d3ebd82ba5a79ad_1891369_800x0_resize_box_3.png 800w, /p/scala-data-collections-performance-sequence-types/images/wallpaper_hu567b4ea1dc9afa647d3ebd82ba5a79ad_1891369_1600x0_resize_box_3.png 1600w"
+                        width="800" 
+                        height="208" 
+                        loading="lazy"
+                        alt="Featured image of post Scala Data Collections Performance: Maps and Sets" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/scala/" >
+                Scala
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/scala-data-collections-performance-sequence-types/">Scala Data Collections Performance: Maps and Sets</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jan 05, 2022</time>
+            </div>
+        
+
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+<script src="https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/header-attrs/header-attrs.js"></script>
+<link href="https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/tabwid/tabwid.css" rel="stylesheet" />
+<script src="https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/htmlwidgets/htmlwidgets.js"></script>
+<script src="https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/echarts4r/echarts-en.min.js"></script>
+<script src="https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/echarts4r/ecStat.min.js"></script>
+<script src="https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/echarts4r/dataTool.min.js"></script>
+<script src="https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/echarts4r-binding/echarts4r.js"></script>
+<script src="https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/shine/shine.js"></script>
+
+
+<p>In this post, we try to understand the size and performance of the <code>Sets</code> and <code>Maps</code> data collection. In the first, we review the structure of the Mutable and Immutabla <code>Sets</code> and <code>Maps</code>collections.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-1"></span>
+<img src="images/map_set.svg" alt="Immutable Maps and Sets Data Collection"  />
+<p class="caption">
+Figure 1: Immutable Maps and Sets Data Collection
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
+<img src="images/maps.svg" alt="Mutable Maps Data Collection"  />
+<p class="caption">
+Figure 2: Mutable Maps Data Collection
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-3"></span>
+<img src="images/sets.svg" alt="Mutable Sets Data Collection"  />
+<p class="caption">
+Figure 3: Mutable Sets Data Collection
+</p>
+</div>
+<p>A quick review of each collection application may be found in the table below.</p>
+<template id="2e505583-e34d-4516-8882-c489f719d5aa"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+</style><div class="tabwid"><style>.cl-ce24b9ec{}.cl-ce135774{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ce138a64{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ce142118{width:102.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ce14212c{width:2293.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ce14212d{width:102.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ce142136{width:2293.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ce142140{width:102.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ce142141{width:2293.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table class='cl-ce24b9ec'>
+<caption class="Table Caption">
+<p><span id="tab:unnamed-chunk-5">Table 1: </span>Maps and Sets Data Collections</p>
+</caption>
+<thead><tr style="overflow-wrap:break-word;"><td class="cl-ce142140"><p class="cl-ce138a64"><span class="cl-ce135774">Collection</span></p></td><td class="cl-ce142141"><p class="cl-ce138a64"><span class="cl-ce135774">description</span></p></td></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-ce142118"><p class="cl-ce138a64"><span class="cl-ce135774">HashSet</span></p></td><td class="cl-ce14212c"><p class="cl-ce138a64"><span class="cl-ce135774">A concrete implementation of Set semantics is HashSet. The element's hashCode will be used as a key in the HashSet, allowing for a quick lookup of the element's value. HashSet has immutable and mutable type</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-ce142118"><p class="cl-ce138a64"><span class="cl-ce135774">HashMap</span></p></td><td class="cl-ce14212c"><p class="cl-ce138a64"><span class="cl-ce135774">The Scala Collection includes mutable and immutable HashMap. It's used to save and return a map of elements. A HashMap is a Hash Table data structure that stores a collection of key and value pairs. It implements Map in its most basic form.</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-ce142118"><p class="cl-ce138a64"><span class="cl-ce135774">TreeSet</span></p></td><td class="cl-ce14212c"><p class="cl-ce138a64"><span class="cl-ce135774">A set is a data structure that allows us to store distinct components. The Set does not provide element ordering, but a TreeSet will create items in a specific order. TreeSet includes two types in Scala: scala.collection.mutable.TreeSet and scala.collection.immutable.TreeSet.</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-ce142118"><p class="cl-ce138a64"><span class="cl-ce135774">TreeMap</span></p></td><td class="cl-ce14212c"><p class="cl-ce138a64"><span class="cl-ce135774">TreeMap is useful when performing range queries or traversing in order, whereas the map does not keep order. If you only need key lookups and don't care in which order key-values are traversed, Map will suffice, which will generally have better performance.</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-ce142118"><p class="cl-ce138a64"><span class="cl-ce135774">BitSet</span></p></td><td class="cl-ce14212c"><p class="cl-ce138a64"><span class="cl-ce135774">Bitsets are collections of non-negative integers that are expressed as 64-bit words with variable-size arrays of bits. The greatest number stored in a bitset determines its memory footprint. There are two versions of BitSet in Scala: scala.collection.immutable.BitSet and scala.collection.mutable.BitSet.</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-ce142118"><p class="cl-ce138a64"><span class="cl-ce135774">ListMap</span></p></td><td class="cl-ce14212c"><p class="cl-ce138a64"><span class="cl-ce135774">A ListMap is a collection of key and value pairs where the keys are backed by a List data structure. ListMap collections are used only for a small number of elements.</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-ce14212d"><p class="cl-ce138a64"><span class="cl-ce135774">WeakHashMap</span></p></td><td class="cl-ce142136"><p class="cl-ce138a64"><span class="cl-ce135774">A weak hash map is a special kind of hash map where the garbage collector does not follow links from the map to the keys stored in it. This means that a key and its associated value will disappear from the map if there is no other reference to that key. Weak hash maps are useful for tasks such as caching, where you want to re-use an expensive function's result if the function is called again on the same key.</span></p></td></tr></tbody></table></div></template>
+<div class="flextable-shadow-host" id="4723dadf-a460-4d76-bbde-31a87663c622"></div>
+<script>
+var dest = document.getElementById("4723dadf-a460-4d76-bbde-31a87663c622");
+var template = document.getElementById("2e505583-e34d-4516-8882-c489f719d5aa");
+var caption = template.content.querySelector("caption");
+if(caption) {
+  caption.style.cssText = "display:block;text-align:center;";
+  var newcapt = document.createElement("p");
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script>
+
+<div id="benchmark-codes" class="section level3">
+<h3>Benchmark Codes</h3>
+<p>The benchmark codes in this section are more similar to the <code>Seq</code> Collection benchmark codes from a previous post. Only the benchmark functions for <code>Sets</code> and <code>Maps</code> are different.
+The <code>Map</code> benchmark code can be found here.</p>
+<pre class="scala"><code>  def benchmarkMap(x:scala.collection.Map[Int,Int], n:Int, m:Int): Map[String, Double] = {
+    Map(
+      &quot;volume&quot; -&gt; estimate(x),
+      &quot;lookup&quot; -&gt; timeElapsing(x.get(m))(n),
+      &quot;add&quot; -&gt; timeElapsing(x ++ Map((m,m)))(n),
+      &quot;remove&quot; -&gt; timeElapsing(x-0)(n),
+      &quot;min&quot; -&gt; timeElapsing(x.minBy(_._2)._1)(n)
+    )
+  }</code></pre>
+<p>Similar to <code>Map</code>, we define a benchmark function for <code>Set</code>.</p>
+<pre class="scala"><code>  def benchmarkSet(x:scala.collection.Set[Int], n:Int, m:Int): Map[String, Double] = {
+    Map(
+      &quot;volume&quot; -&gt; estimate(x),
+      &quot;lookup&quot; -&gt; timeElapsing(x.contains(m))(n),
+      &quot;add&quot; -&gt; timeElapsing(x ++ Map((m,m)))(n),
+      &quot;remove&quot; -&gt; timeElapsing(x-0)(n),
+      &quot;min&quot; -&gt; timeElapsing(x.min)(n)
+    )
+  }</code></pre>
+<p>In the below code, the definition of each collection can be found.</p>
+<pre class="scala"><code>  val stats: Seq[List[Map[String, String]]] = for(s &lt;- sizes) yield {
+    val integers = 0 until s
+    List(
+      (&quot;Immutable_HashMap&quot;, integers.zipWithIndex.toMap),
+      (&quot;Immutable_TreeMap&quot;, scala.collection.immutable.TreeMap(integers.zipWithIndex:_*)),
+      (&quot;Immutable_ListMap&quot;,scala.collection.immutable.ListMap(integers.zipWithIndex:_*)),
+      (&quot;Mutable_HashMap&quot;, scala.collection.mutable.HashMap(integers.zipWithIndex:_*)),
+      (&quot;Mutable_WeakHashMap&quot;,scala.collection.mutable.WeakHashMap(integers.zipWithIndex:_*))
+    ).map(x =&gt; {
+      Map(&quot;size&quot; -&gt; s.toString, &quot;collection&quot; -&gt; x._1) ++ 
+        benchmarkMap(x._2, 100, s).map(x =&gt; (x._1, x._2.toString))
+    }) ++  List(
+      (&quot;Immutable_HashSet&quot;, integers.toSet),
+      (&quot;Immutable_TreeSet&quot;, scala.collection.immutable.TreeSet(integers:_*)),
+      (&quot;Immutable_BitSet&quot;, scala.collection.immutable.BitSet(integers:_*)),
+      (&quot;Mutable_HashSet&quot;, scala.collection.mutable.HashSet(integers:_*)),
+      (&quot;Mutable_BitSet&quot;, scala.collection.mutable.BitSet(integers:_*)),
+      (&quot;Mutable_TreeSet&quot;, scala.collection.mutable.TreeSet(integers:_*))
+    ).map(x =&gt; {
+      Map(&quot;size&quot; -&gt; s.toString, &quot;collection&quot; -&gt; x._1) ++ 
+        benchmarkSet(x._2, 100, s).map(x =&gt; (x._1, x._2.toString))
+    })
+
+  }</code></pre>
+</div>
+<div id="object-size-in-memory" class="section level3">
+<h3>Object Size in Memory</h3>
+<p>The benchmark information is now ready.
+The table below shows the estimated size in bytes of various collections of varied sizes.</p>
+<template id="81e3bb93-1ad2-49df-ab04-a638d397a887"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+</style><div class="tabwid"><style>.cl-cec93e18{}.cl-ceb3e72a{font-family:'DejaVu Sans';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ceb3e748{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ceb41eac{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ceb41eca{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ceb55c7c{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ceb55cc2{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ceb55ccc{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(102, 102, 102, 1.00);border-top: 0.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ceb55cd6{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(102, 102, 102, 1.00);border-top: 0.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ceb55ce0{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ceb55cea{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ceb55cf4{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ceb55cfe{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table class='cl-cec93e18'>
+<caption class="Table Caption">
+<p><span id="tab:unnamed-chunk-9">Table 2: </span>Estimated Size of Scala Collections[Int] In Different Size (in bytes)</p>
+</caption>
+<thead><tr style="overflow-wrap:break-word;"><td class="cl-ceb55cfe"><p class="cl-ceb41eac"><span class="cl-ceb3e72a">Immutability</span></p></td><td class="cl-ceb55cfe"><p class="cl-ceb41eac"><span class="cl-ceb3e72a">Collection</span></p></td><td class="cl-ceb55cf4"><p class="cl-ceb41eca"><span class="cl-ceb3e72a">1</span></p></td><td class="cl-ceb55cf4"><p class="cl-ceb41eca"><span class="cl-ceb3e72a">16</span></p></td><td class="cl-ceb55cf4"><p class="cl-ceb41eca"><span class="cl-ceb3e72a">256</span></p></td><td class="cl-ceb55cf4"><p class="cl-ceb41eca"><span class="cl-ceb3e72a">4,096</span></p></td><td class="cl-ceb55cf4"><p class="cl-ceb41eca"><span class="cl-ceb3e72a">65,536</span></p></td><td class="cl-ceb55cf4"><p class="cl-ceb41eca"><span class="cl-ceb3e72a">1,048,576</span></p></td></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td  rowspan="5"class="cl-ceb55cc2"><p class="cl-ceb41eac"><span class="cl-ceb3e748">Immutable</span></p></td><td class="cl-ceb55cc2"><p class="cl-ceb41eac"><span class="cl-ceb3e748">HashMap</span></p></td><td class="cl-ceb55c7c"><p class="cl-ceb41eca"><span class="cl-ceb3e748">40</span></p></td><td class="cl-ceb55c7c"><p class="cl-ceb41eca"><span class="cl-ceb3e748">1,136</span></p></td><td class="cl-ceb55c7c"><p class="cl-ceb41eca"><span class="cl-ceb3e748">24,304</span></p></td><td class="cl-ceb55c7c"><p class="cl-ceb41eca"><span class="cl-ceb3e748">430,384</span></p></td><td class="cl-ceb55c7c"><p class="cl-ceb41eca"><span class="cl-ceb3e748">7,050,528</span></p></td><td class="cl-ceb55c7c"><p class="cl-ceb41eca"><span class="cl-ceb3e748">111,206,912</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-ceb55cd6"><p class="cl-ceb41eac"><span class="cl-ceb3e748">HashSet</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">32</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">744</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">14,184</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">235,944</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">3,906,968</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">60,877,432</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-ceb55cd6"><p class="cl-ceb41eac"><span class="cl-ceb3e748">ListMap</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">56</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">656</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">12,304</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">227,344</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">3,667,984</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">58,718,224</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-ceb55cd6"><p class="cl-ceb41eac"><span class="cl-ceb3e748">TreeMap</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">88</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">808</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">14,376</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">260,136</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">4,192,296</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">67,106,856</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-ceb55cd6"><p class="cl-ceb41eac"><span class="cl-ceb3e748">TreeSet</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">104</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">824</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">12,344</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">196,664</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">3,145,784</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">50,331,704</span></p></td></tr><tr style="overflow-wrap:break-word;"><td  rowspan="4"class="cl-ceb55ce0"><p class="cl-ceb41eac"><span class="cl-ceb3e748">Mutable</span></p></td><td class="cl-ceb55cd6"><p class="cl-ceb41eac"><span class="cl-ceb3e748">HashMap</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">160</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">824</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">14,328</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">268,848</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">4,412,704</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">63,585,176</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-ceb55cd6"><p class="cl-ceb41eac"><span class="cl-ceb3e748">HashSet</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">200</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">568</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">7,848</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">112,568</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">2,097,144</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">32,883,416</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-ceb55cd6"><p class="cl-ceb41eac"><span class="cl-ceb3e748">TreeSet</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">120</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">960</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">14,400</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">229,440</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">3,670,080</span></p></td><td class="cl-ceb55ccc"><p class="cl-ceb41eca"><span class="cl-ceb3e748">58,720,320</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-ceb55ce0"><p class="cl-ceb41eac"><span class="cl-ceb3e748">WeakHashMap</span></p></td><td class="cl-ceb55cea"><p class="cl-ceb41eca"><span class="cl-ceb3e748">344</span></p></td><td class="cl-ceb55cea"><p class="cl-ceb41eca"><span class="cl-ceb3e748">1,248</span></p></td><td class="cl-ceb55cea"><p class="cl-ceb41eca"><span class="cl-ceb3e748">17,856</span></p></td><td class="cl-ceb55cea"><p class="cl-ceb41eca"><span class="cl-ceb3e748">259,784</span></p></td><td class="cl-ceb55cea"><p class="cl-ceb41eca"><span class="cl-ceb3e748">98,542,768</span></p></td><td class="cl-ceb55cea"><p class="cl-ceb41eca"><span class="cl-ceb3e748">67,101,968</span></p></td></tr></tbody></table></div></template>
+<div class="flextable-shadow-host" id="246bb20e-e96f-4eaa-8717-fb4cd487a188"></div>
+<script>
+var dest = document.getElementById("246bb20e-e96f-4eaa-8717-fb4cd487a188");
+var template = document.getElementById("81e3bb93-1ad2-49df-ab04-a638d397a887");
+var caption = template.content.querySelector("caption");
+if(caption) {
+  caption.style.cssText = "display:block;text-align:center;";
+  var newcapt = document.createElement("p");
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script>
+
+<p>The average memory size of each object is calculated and shown below.</p>
+<div id="htmlwidget-1" style="width:100%;height:500px;" class="echarts4r html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"theme":"shine","tl":false,"draw":true,"renderer":"canvas","events":[],"buttons":[],"opts":{"xAxis":[{"show":true,"name":"Collection"}],"yAxis":[{"data":["WeakHashMap","TreeSet","TreeMap","ListMap","HashSet","HashMap"],"type":"category","boundaryGap":true,"name":"Volume"}],"legend":{"data":["Immutable","Mutable"]},"series":[{"data":[{"value":["58","TreeSet"]},{"value":["64","TreeMap"]},{"value":["52","ListMap"]},{"value":["52","HashSet"]},{"value":["87","HashMap"]}],"name":"Immutable","type":"bar","yAxisIndex":0,"xAxisIndex":0,"coordinateSystem":"cartesian2d"},{"data":[{"value":["354","WeakHashMap"]},{"value":[" 67","TreeSet"]},{"value":[" 59","HashSet"]},{"value":[" 77","HashMap"]}],"name":"Mutable","type":"bar","yAxisIndex":0,"xAxisIndex":0,"coordinateSystem":"cartesian2d"}],"title":[{"text":"Average Collection[Int] Volume in Bytes"}],"tooltip":{"trigger":"axis","textStyle":{"color":"#ffffff"}}},"dispose":true},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="methods-performance" class="section level3">
+<h3>Methods Performance</h3>
+<p>The table below contains a list of the data collection methods used.</p>
+<template id="136cb7b7-2235-43c1-8ef0-972c2706031c"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+</style><div class="tabwid"><style>.cl-cf3cbaa0{}.cl-cf30d0f0{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-cf30ed24{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cf316830{width:79.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf316844{width:521.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf316845{width:521.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf31684e{width:79.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf31684f{width:521.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf316858{width:79.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table class='cl-cf3cbaa0'>
+<caption class="Table Caption">
+<p><span id="tab:unnamed-chunk-12">Table 3: </span>Operations That Are Tested on Maps ans Sets</p>
+</caption>
+<thead><tr style="overflow-wrap:break-word;"><td class="cl-cf316858"><p class="cl-cf30ed24"><span class="cl-cf30d0f0">operations</span></p></td><td class="cl-cf31684f"><p class="cl-cf30ed24"><span class="cl-cf30d0f0">description</span></p></td></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-cf316830"><p class="cl-cf30ed24"><span class="cl-cf30d0f0">lookup</span></p></td><td class="cl-cf316844"><p class="cl-cf30ed24"><span class="cl-cf30d0f0">Testing whether an element is contained in set, or selecting a value associated with a key.</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-cf316830"><p class="cl-cf30ed24"><span class="cl-cf30d0f0">add</span></p></td><td class="cl-cf316844"><p class="cl-cf30ed24"><span class="cl-cf30d0f0">Adding a new element to a set or key/value pair to a map.</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-cf316830"><p class="cl-cf30ed24"><span class="cl-cf30d0f0">remove</span></p></td><td class="cl-cf316844"><p class="cl-cf30ed24"><span class="cl-cf30d0f0">Removing an element from a set or a key from a map.</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-cf31684e"><p class="cl-cf30ed24"><span class="cl-cf30d0f0">min</span></p></td><td class="cl-cf316845"><p class="cl-cf30ed24"><span class="cl-cf30d0f0">The smallest element of the set, or the smallest key of a map.</span></p></td></tr></tbody></table></div></template>
+<div class="flextable-shadow-host" id="16244f16-7d90-4d56-b7e5-75c4f30c3420"></div>
+<script>
+var dest = document.getElementById("16244f16-7d90-4d56-b7e5-75c4f30c3420");
+var template = document.getElementById("136cb7b7-2235-43c1-8ef0-972c2706031c");
+var caption = template.content.querySelector("caption");
+if(caption) {
+  caption.style.cssText = "display:block;text-align:center;";
+  var newcapt = document.createElement("p");
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script>
+
+<p>Scala collection performance characteristics can be found in the <a href="https://docs.scala-lang.org/overviews/collections/performance-characteristics.html">Scala documents</a>. For comparison with the empirical results, the Scala performance table is given below.</p>
+<template id="e8f70bcd-fe84-4db6-b485-91e835ea7553"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+</style><div class="tabwid"><style>.cl-cf593298{}.cl-cf51279c{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-cf513a8e{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cf518070{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf51807a{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf518084{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table class='cl-cf593298'>
+<caption class="Table Caption">
+<p><span id="tab:unnamed-chunk-13">Table 4: </span>Performance Characteristics of Immutable Maps and Sets</p>
+</caption>
+<thead><tr style="overflow-wrap:break-word;"><td class="cl-cf518084"><p class="cl-cf513a8e"><span class="cl-cf51279c">Immutability</span></p></td><td class="cl-cf518084"><p class="cl-cf513a8e"><span class="cl-cf51279c">Collection</span></p></td><td class="cl-cf518084"><p class="cl-cf513a8e"><span class="cl-cf51279c">lookup</span></p></td><td class="cl-cf518084"><p class="cl-cf513a8e"><span class="cl-cf51279c">add</span></p></td><td class="cl-cf518084"><p class="cl-cf513a8e"><span class="cl-cf51279c">remove</span></p></td><td class="cl-cf518084"><p class="cl-cf513a8e"><span class="cl-cf51279c">min</span></p></td></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td  rowspan="4"class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">Immutable</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">HashSet/HashMap</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">eC</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">eC</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">eC</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">L</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">TreeSet/TreeMap</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">Log</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">Log</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">Log</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">Log</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">BitSet</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">C</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">L</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">L</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">eC1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">ListMap</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">L</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">L</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">L</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">L</span></p></td></tr><tr style="overflow-wrap:break-word;"><td  rowspan="4"class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">Mutable</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">HashSet/HashMap</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">eC</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">eC</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">eC</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">L</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">WeakHashMap</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">eC</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">eC</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">eC</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">L</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">BitSet</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">C</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">aC</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">C</span></p></td><td class="cl-cf518070"><p class="cl-cf513a8e"><span class="cl-cf51279c">eC</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-cf51807a"><p class="cl-cf513a8e"><span class="cl-cf51279c">TreeSet</span></p></td><td class="cl-cf51807a"><p class="cl-cf513a8e"><span class="cl-cf51279c">Log</span></p></td><td class="cl-cf51807a"><p class="cl-cf513a8e"><span class="cl-cf51279c">Log</span></p></td><td class="cl-cf51807a"><p class="cl-cf513a8e"><span class="cl-cf51279c">Log</span></p></td><td class="cl-cf51807a"><p class="cl-cf513a8e"><span class="cl-cf51279c">Log</span></p></td></tr></tbody></table></div></template>
+<div class="flextable-shadow-host" id="69b82f10-b794-415e-861a-8c49e6791c6f"></div>
+<script>
+var dest = document.getElementById("69b82f10-b794-415e-861a-8c49e6791c6f");
+var template = document.getElementById("e8f70bcd-fe84-4db6-b485-91e835ea7553");
+var caption = template.content.querySelector("caption");
+if(caption) {
+  caption.style.cssText = "display:block;text-align:center;";
+  var newcapt = document.createElement("p");
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script>
+
+<p>The performance results of each method and collection are shown using a scatter plot. We add a regression line to the plot to see the growth rate.</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-15"></span>
+<img src="https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/figure-html/unnamed-chunk-15-1.svg" alt="Immutable Collection Methods Performance" width="1440" />
+<p class="caption">
+Figure 4: Immutable Collection Methods Performance
+</p>
+</div>
+<p>A similar plot is plotted for mutable collection.</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-16"></span>
+<img src="https://ehyaei.github.io/p/scala-data-collections-performance-sequence-types/index.en_files/figure-html/unnamed-chunk-16-1.svg" alt="Mutable Collection Methods Performance" width="1440" />
+<p class="caption">
+Figure 5: Mutable Collection Methods Performance
+</p>
+</div>
+</div>
+<div id="refrences" class="section level1">
+<h1>Refrences</h1>
+<ul>
+<li><a href="https://docs.scala-lang.org/overviews/collections/performance-characteristics.html">Performance Characteristics</a></li>
+<li><a href="https://www.lihaoyi.com/post/BenchmarkingScalaCollections.html">Benchmarking Scala Collections</a></li>
+</ul>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/benchmark/">Benchmark</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">Related contents</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/p/scala-data-structures/">
+        
+        
+            <div class="article-image">
+                <img src="/p/scala-data-structures/images/data_structure.7640a7dcb937ee23638c3f12d5f34205_hu9c2b162783d38601edd63b91b3ce1982_1098763_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="scala-data-structures" 
+                        data-hash="md5-dkCn3Lk37iNjjD8S1fNCBQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Scala Data Collections Performance: Sequence Types</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="Ehyaei/ehyaei.github.io"
+        issue-term="pathname"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2022 Random Walks in Datasets
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

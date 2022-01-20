@@ -1,0 +1,2 @@
+[debug] Created transactional ClassFileManager with tempDir = /mnt/a/Projects/Blog/content/post/2022-01-03-scala-data-structures/jars/target/scala-2.12/classes.bak
+[debug] Removing the temporary directory used for backing up class files: /mnt/a/Projects/Blog/content/post/2022-01-03-scala-data-structures/jars/target/scala-2.12/classes.bak
